@@ -1,0 +1,7 @@
+# virtualenv folder
+bin/
+lib/
+include/
+
+# configuration
+etc/

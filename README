@@ -1,0 +1,21 @@
+An authentication system.
+
+# With virtualenv
+
+    $ cd author
+    $ virtualenv .
+    $ ./bin/pip install -r requirements.txt
+
+# Configure
+
+    $ export AUTHOR_SETTINGS=/path/to/settings
+
+# Create database
+
+    $ ./bin/python
+    >> from author import data
+    >> data.init_db()
+
+# Run the webserver
+
+    ./bin/python runserver.py
