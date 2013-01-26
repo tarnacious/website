@@ -3,6 +3,7 @@ from flask import render_template, request, g, session, flash, \
 from flask_openid import OpenID
 from author.data import User, db_session
 from author import app
+import urlparse
 
 # setup flask-openid
 oid = OpenID(app)
@@ -15,8 +16,12 @@ def openid():
     to start the OpenID machinery.
     """
     # if we are already logged in, go back to were we came from
+    # unless we are already here.
     if g.user is not None:
-        return redirect(oid.get_next_url())
+        path = urlparse.urlparse(oid.get_next_url()).path
+        if path != request.path:
+            return redirect(oid.get_next_url())
+
     if request.method == 'POST':
         openid = request.form.get('openid')
         if openid:
