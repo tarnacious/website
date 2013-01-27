@@ -48,5 +48,5 @@ class User(Base):
 class Session(Base):
     __tablename__ = 'sessions'
     id = Column(Integer, primary_key=True)
-    session_id = Column(String(20))
+    session_id = Column(String(100))
     user_id = Column(Integer, ForeignKey('users.id'))
