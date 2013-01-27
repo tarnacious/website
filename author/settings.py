@@ -1,6 +1,8 @@
 DATABASE_URI = 'sqlite:////tmp/flask-openid.db'
 SECRET_KEY = 'development key'
 DEBUG = True
+SERVER_NAME = '127.0.0.1'
+SERVER_PORT = 5000
 
 TWITTER_CONSUMER_KEY = ''
 TWITTER_CONSUMER_SECRET = ''

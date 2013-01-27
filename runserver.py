@@ -1,2 +1,2 @@
 from author import app
-app.run(debug=True)
+app.run(app.config["SERVER_NAME"], app.config["SERVER_PORT"])
