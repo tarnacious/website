@@ -75,6 +75,10 @@ def oauth_authorized(resp):
     user.oauth_secret = resp['oauth_token_secret']
     db_session.commit()
 
-    session['user_id'] = user.id
+    from author.data import session_create
+    session_id = session_create(user)
+    session['session_id'] = session_id
+
+    #session['user_id'] = user.id
     flash('You were signed in')
     return redirect(next_url)

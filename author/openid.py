@@ -33,40 +33,20 @@ def openid():
 
 @oid.after_login
 def create_or_login(resp):
-    """This is called when login with OpenID succeeded and it's not
-    necessary to figure out if this is the users's first login or not.
-    This function has to redirect otherwise the user will be presented
-    with a terrible URL which we certainly don't want.
-    """
+    flash(u'Successfully signed in')
+    from author.data import session_create
     session['openid'] = resp.identity_url
     user = User.query.filter_by(openid=resp.identity_url).first()
     if user is not None:
-        flash(u'Successfully signed in')
-        g.user = user
+        session_id = session_create(user)
+        session['session_id'] = session_id
         return redirect(oid.get_next_url())
-    return redirect(url_for('create_profile', next=oid.get_next_url(),
-                            name=resp.fullname or resp.nickname,
-                            email=resp.email))
-
-
-@app.route('/create-profile', methods=['GET', 'POST'])
-def create_profile():
-    """If this is the user's first login, the create_or_login function
-    will redirect here so that the user can set up his profile.
-    """
-
-    if g.user is not None or 'openid' not in session:
-        return redirect(url_for('index'))
-    if request.method == 'POST':
-        name = request.form['name']
-        email = request.form['email']
-        if not name:
-            flash(u'Error: you have to provide a name')
-        elif '@' not in email:
-            flash(u'Error: you have to enter a valid email address')
-        else:
-            flash(u'Profile successfully created')
-            db_session.add(User(name, email, session['openid']))
-            db_session.commit()
-            return redirect(oid.get_next_url())
-    return render_template('create_profile.html', next_url=oid.get_next_url())
+    else:
+        user = User(resp.fullname or resp.nickname)
+        user.email = resp.email
+        user.openid = resp.identity_url
+        db_session.add(user)
+        db_session.commit()
+        session_id = session_create(user)
+        session['session_id'] = session_id
+    return redirect(url_for('edit_profile', next=oid.get_next_url()))

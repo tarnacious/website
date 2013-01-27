@@ -6,10 +6,11 @@ from author.data import db_session, User
 @app.before_request
 def before_request():
     g.user = None
-    if 'openid' in session:
-        g.user = User.query.filter_by(openid=session['openid']).first()
-    if 'user_id' in session:
-        g.user = User.query.get(session['user_id'])
+    if 'session_id' in session:
+        from author.data import session_get
+        s = session_get(session['session_id'])
+        if s:
+            g.user = User.query.get(s.user_id)
 
 
 @app.after_request
@@ -20,9 +21,8 @@ def after_request(response):
 
 @app.route('/logout')
 def logout():
-    session.pop('user_id', None)
-    session.pop('openid', None)
-    flash('You were signed out')
+    session.pop('session_id', None)
+    flash('You have been signed out')
     return redirect(request.referrer or url_for('index'))
 
 
@@ -35,7 +35,7 @@ def index():
 def edit_profile():
     """Updates a profile"""
     if g.user is None:
-        abort(401)
+        return redirect(url_for('index'))
     form = dict(name=g.user.name, email=g.user.email)
     if request.method == 'POST':
         if 'delete' in request.form:

@@ -1,5 +1,10 @@
 DATABASE_URI = 'sqlite:////tmp/flask-openid.db'
 SECRET_KEY = 'development key'
 DEBUG = True
+
 TWITTER_CONSUMER_KEY = ''
 TWITTER_CONSUMER_SECRET = ''
+
+GOOGLE_CLIENT_ID = ''
+GOOGLE_CLIENT_SECRET = ''
+GOOGLE_REDIRECT_URI = ''

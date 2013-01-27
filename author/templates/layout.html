@@ -11,6 +11,7 @@
   {% else %}
   <li><a href="{{ url_for('openid') }}">sign in</a>
   <li><a href="{{ url_for('login_twitter') }}">twitter sign in</a>
+  <li><a href="{{ url_for('login_google') }}">google sign in</a>
   {% endif %}
 </ul>
 {% for message in get_flashed_messages() %}

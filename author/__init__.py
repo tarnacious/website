@@ -12,3 +12,4 @@ else:
 from handlers import *
 from openid import *
 from twitter import *
+from google import *
