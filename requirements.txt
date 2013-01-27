@@ -3,3 +3,4 @@ flask-openid
 flask-oauth
 sqlalchemy
 psycopg2
+gunicorn

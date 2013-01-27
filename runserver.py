@@ -1,2 +1,6 @@
 from author import app
-app.run(port=app.config["PORT"])
+
+
+if __name__ == '__main__':
+    app.run(port=app.config["PORT"])
+ 
