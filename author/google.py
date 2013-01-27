@@ -19,31 +19,7 @@ google = oauth.remote_app('google',
                           consumer_secret=app.config['GOOGLE_CLIENT_SECRET'])
 
 
-@app.route('/google_home')
-def google_home():
-    access_token = session.get('access_token')
-    if access_token is None:
-        return redirect(url_for('login_google'))
-
-    access_token = access_token[0]
-    from urllib2 import Request, urlopen, URLError
-
-    headers = {'Authorization': 'OAuth ' + access_token}
-    req = Request('https://www.googleapis.com/oauth2/v1/userinfo',
-                  None, headers)
-    try:
-        res = urlopen(req)
-    except URLError, e:
-        if e.code == 401:
-            # Unauthorized - bad token
-            session.pop('access_token', None)
-            return redirect(url_for('login'))
-        return res.read()
-
-    return res.read()
-
-
-@app.route('/login/google')
+@app.route('/auth/google')
 def login_google():
     callback = url_for('authorized', _external=True)
     return google.authorize(callback=callback)

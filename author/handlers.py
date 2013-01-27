@@ -19,19 +19,19 @@ def after_request(response):
     return response
 
 
-@app.route('/logout')
+@app.route('/auth/logout')
 def logout():
     session.pop('session_id', None)
     flash('You have been signed out')
     return redirect(request.referrer or url_for('index'))
 
 
-@app.route('/')
+@app.route('/auth/')
 def index():
     return render_template('index.html')
 
 
-@app.route('/profile', methods=['GET', 'POST'])
+@app.route('/auth/profile', methods=['GET', 'POST'])
 def edit_profile():
     """Updates a profile"""
     if g.user is None:

@@ -9,7 +9,7 @@ import urlparse
 oid = OpenID(app)
 
 
-@app.route('/openid', methods=['GET', 'POST'])
+@app.route('/auth/openid', methods=['GET', 'POST'])
 @oid.loginhandler
 def openid():
     """Does the login via OpenID.  Has to call into `oid.try_login`
