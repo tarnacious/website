@@ -17,18 +17,20 @@ def init_db():
     engine = create_engine(app.config['DATABASE_URI'])
     Base.metadata.create_all(bind=engine)
 
+
 def session_create(user):
-    import uuid
     session = Session()
-    session.session_id =  str(uuid.uuid1())
+    session.session_id = str(uuid.uuid1())
     session.user_id = user.id
     db_session.add(session)
     db_session.commit()
     return session.session_id
 
+
 def session_get(session_id):
     session = Session.query.filter_by(session_id=session_id).first()
     return session
+
 
 class User(Base):
     __tablename__ = 'users'
@@ -36,13 +38,8 @@ class User(Base):
     name = Column(String(60))
     email = Column(String(200))
     website = Column(String(200))
-    openid = Column(String(200))
-    oauth_token = Column(String(200))
-    oauth_secret = Column(String(200))
-    google_id = Column(String(200))
-
-    def __init__(self, name):
-        self.name = name
+    provider = Column(String(200))
+    identity = Column(String(200))
 
 
 class Session(Base):

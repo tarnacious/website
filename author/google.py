@@ -1,8 +1,8 @@
-from flask import redirect, url_for, session, request
+from flask import redirect, url_for, session
 from flask_oauth import OAuth
 from author import app
 from author.data import User, db_session
-from author.data import session_create, session_get
+from author.data import session_create
 import json
 oauth = OAuth()
 
@@ -29,15 +29,17 @@ def login_google():
 @google.authorized_handler
 def authorized(resp):
     access_token = resp['access_token']
-    google_id = resp['id_token']
 
     info = request_userinfo(access_token)
-    user = User.query.filter_by(google_id=info['email']).first()
+    user = User.query.filter_by(identity=info['email'],
+                                provider='google').first()
 
     if user is None:
-        user = User(info['email'])
+        user = User()
+        user.name = info['email'].split('@')[0]
         user.email = info['email']
-        user.google_id = info['email']
+        user.provider = 'google'
+        user.identitiy = info['email']
         db_session.add(user)
         db_session.commit()
     else:
@@ -55,9 +57,10 @@ def request_userinfo(access_token):
                   None, headers)
     try:
         res = urlopen(req)
-    except URLError, e:
+    except URLError:
         raise
     return json.loads(res.read())
+
 
 @google.tokengetter
 def get_access_token():

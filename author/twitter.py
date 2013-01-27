@@ -1,7 +1,7 @@
 from flask import request, redirect, url_for, session, flash, g
 from flask_oauth import OAuth
 from author import app
-from author.data import User, db_session
+from author.data import User, db_session, session_create
 
 oauth = OAuth()
 
@@ -61,24 +61,26 @@ def oauth_authorized(resp):
         flash(u'You denied the request to sign in.')
         return redirect(next_url)
 
-    user = User.query.filter_by(name=resp['screen_name']).first()
+    user = User.query.filter_by(identity=resp['user_id'],
+                                provider='twitter').first()
 
     # user never signed on
     if user is None:
-        user = User(resp['screen_name'])
+        user = User()
+        user.name = resp['screen_name']
+        user.identity = resp['user_id']
+        user.provider = "twitter"
         db_session.add(user)
 
     # in any case we update the authenciation token in the db
     # In case the user temporarily revoked access we will have
     # new tokens here.
-    user.oauth_token = resp['oauth_token']
-    user.oauth_secret = resp['oauth_token_secret']
+    # user.oauth_token = resp['oauth_token']
+    # user.oauth_secret = resp['oauth_token_secret']
     db_session.commit()
 
-    from author.data import session_create
     session_id = session_create(user)
     session['session_id'] = session_id
 
-    #session['user_id'] = user.id
     flash('You were signed in')
     return redirect(next_url)
