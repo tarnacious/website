@@ -1,16 +1,17 @@
 from author import app
-from flask import g, render_template, session, redirect, url_for, request, flash, abort
+from flask import g, render_template, redirect, url_for, request, flash
 from author.data import db_session, User
+import sessions
 
 
 @app.before_request
 def before_request():
     g.user = None
-    if 'session_id' in session:
-        from author.data import session_get
-        s = session_get(session['session_id'])
-        if s:
-            g.user = User.query.get(s.user_id)
+    session_id = request.cookies.get('session_id')
+    if session_id:
+        session = sessions.find(session_id)
+        if session:
+            g.user = User.query.get(session['user_id'])
 
 
 @app.after_request
@@ -21,8 +22,10 @@ def after_request(response):
 
 @app.route('/auth/logout')
 def logout():
-    session.pop('session_id', None)
     flash('You have been signed out')
+    session_id = request.cookies.get('session_id')
+    if session_id:
+        sessions.remove(session_id)
     return redirect(request.referrer or url_for('index'))
 
 
@@ -41,19 +44,12 @@ def edit_profile():
         if 'delete' in request.form:
             db_session.delete(g.user)
             db_session.commit()
-            session['openid'] = None
+            #TODO: Delete session
             flash(u'Profile deleted')
             return redirect(url_for('index'))
-        form['name'] = request.form['name']
-        form['email'] = request.form['email']
-        if not form['name']:
-            flash(u'Error: you have to provide a name')
-        elif '@' not in form['email']:
-            flash(u'Error: you have to enter a valid email address')
-        else:
-            flash(u'Profile successfully created')
-            g.user.name = form['name']
-            g.user.email = form['email']
+            flash(u'Profile saved')
+            g.user.name = request.form['name']
+            g.user.email = request.form['email']
             db_session.commit()
             return redirect(url_for('edit_profile'))
     return render_template('edit_profile.html', form=form)

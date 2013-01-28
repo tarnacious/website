@@ -4,3 +4,4 @@ flask-oauth
 sqlalchemy
 psycopg2
 gunicorn
+redis

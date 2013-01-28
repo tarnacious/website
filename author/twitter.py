@@ -1,7 +1,8 @@
-from flask import request, redirect, url_for, session, flash, g
+from flask import request, redirect, url_for, flash, g, make_response
 from flask_oauth import OAuth
 from author import app
-from author.data import User, db_session, session_create
+from author.data import User, db_session
+from author import sessions
 
 oauth = OAuth()
 
@@ -72,15 +73,10 @@ def oauth_authorized(resp):
         user.provider = "twitter"
         db_session.add(user)
 
-    # in any case we update the authenciation token in the db
-    # In case the user temporarily revoked access we will have
-    # new tokens here.
-    # user.oauth_token = resp['oauth_token']
-    # user.oauth_secret = resp['oauth_token_secret']
     db_session.commit()
 
-    session_id = session_create(user)
-    session['session_id'] = session_id
-
+    session_id = sessions.start(user)
+    resp = make_response(redirect(next_url))
+    resp.set_cookie('session_id', session_id)
     flash('You were signed in')
-    return redirect(next_url)
+    return resp

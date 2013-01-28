@@ -1,8 +1,8 @@
-from flask import redirect, url_for, session
+from flask import redirect, url_for, make_response, flash
 from flask_oauth import OAuth
 from author import app
 from author.data import User, db_session
-from author.data import session_create
+from author import sessions
 import json
 oauth = OAuth()
 
@@ -42,12 +42,12 @@ def authorized(resp):
         user.identitiy = info['email']
         db_session.add(user)
         db_session.commit()
-    else:
-        db_session.commit()
 
-    session_id = session_create(user)
-    session['session_id'] = session_id
-    return redirect(url_for('index'))
+    session_id = sessions.start(user)
+    resp = make_response(redirect(url_for('index')))
+    resp.set_cookie('session_id', session_id)
+    flash('You were signed in')
+    return resp
 
 
 def request_userinfo(access_token):
@@ -64,4 +64,4 @@ def request_userinfo(access_token):
 
 @google.tokengetter
 def get_access_token():
-    return session.get('access_token')
+    pass

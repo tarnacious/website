@@ -1,12 +1,9 @@
-from flask import render_template, request, g, session, flash, \
-    redirect, url_for
+from flask import render_template, request, g, flash, redirect, make_response
 from flask_openid import OpenID
 from author.data import User, db_session
-from author import app
+from author import app, sessions
 import urlparse
-from author.data import session_create
 
-# setup flask-openid
 oid = OpenID(app)
 
 
@@ -29,14 +26,9 @@ def openid():
 
 @oid.after_login
 def create_or_login(resp):
-    flash(u'Successfully signed in')
     user = User.query.filter_by(identity=resp.identity_url,
                                 provider='openid').first()
-    if user is not None:
-        session_id = session_create(user)
-        session['session_id'] = session_id
-        return redirect(oid.get_next_url())
-    else:
+    if user is None:
         user = User()
         user.name = resp.fullname or resp.nickname or ''
         user.email = resp.email or ''
@@ -44,6 +36,9 @@ def create_or_login(resp):
         user.identity = resp.identity_url
         db_session.add(user)
         db_session.commit()
-        session_id = session_create(user)
-        session['session_id'] = session_id
-    return redirect(oid.get_next_url())
+
+    session_id = sessions.start(user)
+    resp = make_response(redirect(oid.get_next_url()))
+    resp.set_cookie('session_id', session_id)
+    flash('You were signed in')
+    return resp
