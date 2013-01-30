@@ -5,3 +5,6 @@ include/
 
 # configuration
 etc/
+
+# logging
+var/

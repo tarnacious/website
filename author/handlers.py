@@ -36,7 +36,6 @@ def index():
 
 @app.route('/auth/profile', methods=['GET', 'POST'])
 def edit_profile():
-    """Updates a profile"""
     if g.user is None:
         return redirect(url_for('index'))
     form = dict(name=g.user.name, email=g.user.email)

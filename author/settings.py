@@ -8,4 +8,8 @@ TWITTER_CONSUMER_SECRET = ''
 
 GOOGLE_CLIENT_ID = ''
 GOOGLE_CLIENT_SECRET = ''
-GOOGLE_REDIRECT_URI = ''
+GOOGLE_REDIRECT_URI = '/'
+
+LOG_FILE = 'var/log/author.log'
+LOG_FORMAT = '%(asctime)s %(levelname)s: %(message)s'
+
