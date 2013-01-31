@@ -1,10 +1,10 @@
-from author import app
 from flask import g, render_template, redirect, url_for, request, flash
-from author.data import db_session, User
+from app.data import db_session, User
 import sessions
+from author import auth
 
 
-@app.before_request
+@auth.before_request
 def before_request():
     g.user = None
     session_id = request.cookies.get('session_id')
@@ -14,13 +14,13 @@ def before_request():
             g.user = User.query.get(session['user_id'])
 
 
-@app.after_request
+@auth.after_request
 def after_request(response):
     db_session.remove()
     return response
 
 
-@app.route('/auth/logout')
+@auth.route('/auth/logout')
 def logout():
     flash('You have been signed out')
     session_id = request.cookies.get('session_id')
@@ -29,12 +29,12 @@ def logout():
     return redirect(request.referrer or url_for('index'))
 
 
-@app.route('/auth/')
+@auth.route('/auth/')
 def index():
     return render_template('index.html')
 
 
-@app.route('/auth/profile', methods=['GET', 'POST'])
+@auth.route('/auth/profile', methods=['GET', 'POST'])
 def edit_profile():
     if g.user is None:
         return redirect(url_for('index'))

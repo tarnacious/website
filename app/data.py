@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from author import app
+from app import app
 import uuid
 
 engine = create_engine(app.config['DATABASE_URI'])

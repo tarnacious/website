@@ -1,13 +1,14 @@
-from flask import render_template, request, g, flash, redirect, make_response
+from flask import render_template, request, g, flash, redirect, make_response, current_app
+from app import app
 from flask_openid import OpenID
-from author.data import User, db_session
-from author import app, sessions
+from app.data import User, db_session
+from author import auth, sessions
 import urlparse
 
 oid = OpenID(app)
 
 
-@app.route('/auth/openid', methods=['GET', 'POST'])
+@auth.route('/auth/openid', methods=['GET', 'POST'])
 @oid.loginhandler
 def openid():
     if g.user is not None:
