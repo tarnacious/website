@@ -5,3 +5,9 @@ sqlalchemy
 psycopg2
 gunicorn
 redis
+markdown
+pygments
+beautifulsoup
+wtforms
+lxml
+python-dateutil

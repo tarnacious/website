@@ -18,6 +18,10 @@ def init_db():
     Base.metadata.create_all(bind=engine)
 
 
+def import_posts():
+    pass
+
+
 def session_create(user):
     session = Session()
     session.session_id = str(uuid.uuid1())
@@ -47,3 +51,13 @@ class Session(Base):
     id = Column(Integer, primary_key=True)
     session_id = Column(String(100))
     user_id = Column(Integer, ForeignKey('users.id'))
+
+
+class Post(Base):
+    __tablename__ = 'posts'
+    id = Column(Integer, primary_key=True)
+    title = Column(String(200))
+    slug = Column(String(200))
+    html = Column(String(200))
+    text = Column(String(200))
+    date = Column(String(200))
