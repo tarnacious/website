@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from werkzeug.contrib.fixers import ProxyFix
 
 app = Flask(__name__)
@@ -23,5 +23,12 @@ if not app.debug:
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
 from author import auth
+from blog import blog
 
 app.register_blueprint(auth)
+app.register_blueprint(blog)
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')

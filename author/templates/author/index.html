@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block header %}
+<div id="header">
+    <p>
+    The <a href="/journal">Journal</a> of <a href="/">Tarn Barford</a>
+    </p>
+    <h1>
+        Log in 
+    </h1>
+    <p>
+    </p>
+</div>
+{% endblock %}
+
+{% block content %}
+
+  {% if g.user %}
+  <li><a href="{{ url_for('author.edit_profile') }}">profile</a>
+  <li><a href="{{ url_for('author.logout') }}">sign out [{{ g.user.name }}]</a>
+  {% else %}
+
+    <p>
+    Authentication is required to comment, you can authenticate an OpenID.
+    </p>
+    <div id="manual_openid">
+
+    <form action="{{ url_for('author.openid') }}" accept-charset="UTF-8" method="post">
+        {% if error %}
+        <p class=error><strong>Error:</strong> {{ error }}</p>
+        {% endif %}
+        <input type="text" name="openid" class="openid" value="{{ openid }}">
+        <input type="submit" value="Sign in" class="openid_submit">
+        <input type="hidden" name=next value="{{ next }}">
+    </form>
+</div>
+    <p>
+    Or, you can authenticate using one of the services below.
+    </p>
+    <ul id="authentications">
+        <li>
+        <a href="{{ url_for('author.login_twitter') }}">
+            <img alt="Authenticate with Twitter" src="/static/auth_buttons/twitter_64.png?1310614680" />
+        </a>
+        <a href="{{ url_for('author.login_google') }}">
+            <img alt="Authenticate with Google" src="/static/auth_buttons/google_64.png?1310614680" />
+        </a>
+        </li>
+    </ul>
+    <div class="clear"></div>
+        <p>
+        These services are only used to allow you to comment on this site.
+        They are not used to post on your wall or tweet shit to your followers.
+        </p>
+        Your identity is not revealed to other users and you have full control over the displayed
+        name and optional to link to an external site.
+        </p>
+        <p>
+        A benefit of authenicating is you will be able to update and delete your comments.
+        </p>
+    </div>
+    {% endif %}
+{% endblock %}

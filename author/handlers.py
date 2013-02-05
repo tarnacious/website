@@ -31,7 +31,7 @@ def logout():
 
 @auth.route('/auth/')
 def index():
-    return render_template('index.html')
+    return render_template('author/index.html')
 
 
 @auth.route('/auth/profile', methods=['GET', 'POST'])

@@ -1,0 +1,407 @@
+body {
+    font-size:18px;
+    font-family: 'lucida grande', 'helvetica';
+    color: #222222
+    background-color: #FFFFFF;
+}
+
+a, a:link {
+    color:#000;
+}
+
+a:visited {
+    color:#111;
+    background:#fff;
+}
+
+a:hover {
+    background:#000;
+    color:#fff;
+    text-decoration:none;
+}
+
+.clear {
+  clear: both;
+  line-height: 0px;
+  height: 0px;
+}
+
+#menu {
+    display: block;
+}
+
+
+#menu ul {
+    list-style: none;
+    display: block;
+    padding: 0;
+    margin: 0;
+}
+
+#menu ul:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+#menu ul li {
+    display: inline-block;
+    float: left;
+    padding: 5px;
+}
+
+#container {
+    margin: 0 auto;
+    max-width: 900px;
+    min-height: 700px;
+}
+
+
+#container #header {
+    text-align: center; 
+}
+
+#container #header h1 {
+    font-size: 40px;
+    line-height: 50px;
+    margin: 0;
+}
+
+
+#container #header h1 a {
+    font-size: 40px;
+    line-height: 50px;
+    margin: 0;
+    text-decoration: none;
+    color: black;
+    background-color: white;
+}
+
+#container #header p {
+    margin: 0;
+    color:#777777;
+    font-variant:small-caps;
+}
+
+#container #header p a {
+    color:#777777;
+}
+
+#container #header p a:visited {
+    color:#777777;
+}
+
+
+pre.prettyprint {
+    line-height:1.1em;
+    font-family:"Consolas","Bitstream Vera Sans Mono","Courier New",Courier,monospace;
+    font-size: 16px;
+}
+
+.notice, .alert
+{
+    margin-top: 0px;
+}
+
+#container #index {
+   list-style: none;
+}
+
+#container #content {
+    min-height: 600px;
+}
+
+#container #content #index li p {
+    display: inline-block;
+    margin: 0;
+    width: 200px;
+}
+
+#edit-post ul { 
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#edit-post ul li label {
+    display: block;
+}
+
+#footer p {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    font-size: 15px;
+    line-height: 15px;
+}
+
+
+#comments h3
+{
+}
+
+#comments ul
+{
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+#comments ul li h6
+{
+  font-size: 14px;
+}
+
+#comments>ul>li
+{
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-top: 5px;
+}
+
+#comments>ul>li>blockquote
+{
+  margin: 0 0 0 0;
+}
+
+#comments>ul>li>.attribution
+{
+  text-align: right;
+  color:#777777;
+  font-variant:small-caps;
+  margin:0;
+}
+
+#comments>ul>li>.attribution a
+{
+  color:#777777;
+  text-decoration: none;
+}
+
+
+#comments #comment_form
+{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#comments #comment_form input[type=text]
+{
+    background: none repeat scroll 0 0 #F8F8F8;
+    border: 1px solid #E6E6E6;
+    font-family: inherit;
+    font-size: 0.8667em;
+    padding: 7px;
+    width: 500px;
+}
+#comments #comment_form textarea
+{
+    background: none repeat scroll 0 0 #F8F8F8;
+    border: 1px solid #E6E6E6;
+    font-family: inherit;
+    padding: 7px;
+    height: 300px;
+}
+
+#comments .editing
+{
+    display: inline;
+    width: 140px;
+    float: right;
+
+}
+
+#comments .editing div
+{
+    display: inline;
+    width: 70px;
+    float: right;
+
+}
+#comments .editing input
+{
+    display: inline;
+    width: 60px;
+    float: right;
+}
+
+#comment_form label 
+{
+    font-variant: small-caps;
+    font-size: 15px;
+    display: block;
+}
+
+
+#comment_form .field_with_errors > input
+{
+  background-color: pink;
+  border: 0;  
+}
+
+#comment_form .field_with_errors textarea
+{
+  background-color: pink;
+  border: 0;  
+}
+
+
+#comment_form #error_explanation h2
+{
+  display: none;
+}
+#comment_form #error_explanation 
+{
+    background-color: pink;
+    border: 1px solid red;
+    padding: 5px;
+    font-size: 15px;
+    font-variant: small-caps;
+}
+
+
+#comment_form textarea 
+{
+  border: 0;  
+  width: 100%;
+  padding: 0px;
+}
+
+
+#comments .bqstart {
+     float: left;
+     font-size: 200%;
+     color: #000000;
+ }
+
+#comments .bqend {
+     float: right;
+     font-size: 200%;
+     color: #000000;
+     margin-top: -30px;
+ }
+
+#posts
+{
+  font-size: 20px;
+}
+
+ul#posts 
+{
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+#posts li
+{
+  margin-bottom: 20px;
+}
+
+#posts li label
+{
+  display: inline-block;
+  float: left;
+  width: 200px;
+  margin: 0px;
+  margin-right: 30px;
+  font-variant: small-caps;
+  text-transform: capitalize;
+  letter-spacing: 1px;
+  color: #777777;
+  text-align: right;
+}
+
+#posts li p
+{
+  margin: 0px;
+  float: left;
+  width: 500px;
+}
+
+#authentications 
+{
+  background-color: white;
+  list-style: none;
+  width: 450px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+
+#authentications, #authentications a:hover, #authentications a:visited
+{
+  background-color: white;
+}
+#authentications img {
+  border: none;
+}
+
+#authentications li {
+  float: left;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#manual_openid {
+  margin-left: auto;
+  margin-right: auto;
+  width: 380px;
+}
+
+#manual_openid .openid {
+  border: 1px solid #777777;
+  background: url("/static/openid-large.png") no-repeat scroll left center transparent;
+  height: 28px;
+  line-height: 22px;
+  padding-left: 32px;
+  font-size: 18px;
+}
+
+#manual_openid .openid_submit {
+  border: 1px solid #777777;  
+  height: 30px;
+  line-height: 22px;
+  font-size: 18px;
+  margin: 0;
+  padding: 0;
+  padding-bottom: 2px;
+}
+
+#login
+{
+  float: right;
+  position: absolute;
+  right: 10px;
+}
+
+
+#about img
+{
+  margin-right: 30px;
+  margin-bottom: 10px;
+  margin-top: 6px;
+}
+
+#edit_post input
+{
+  width: 100%
+}
+
+#edit_post textarea
+{
+  width: 100%
+}
+
+
+#post_content img.right
+{
+    float: right;
+}
+
+

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tarn Barford</title>
+        <link href="/static/style.css" media="screen" rel="stylesheet" type="text/css" />
+        <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss" />
+
+        {% block head %}
+        {% endblock %}
+
+    </head>
+    <body>
+        <div id="container">
+            {% block header %}
+            <div id="header">
+                <p>
+                The <a href="/journal">Journal</a> of</p>
+                <h1>
+                    Tarn Barford
+                </h1>
+                <p>
+                </p>
+            </div>
+            {% endblock %}
+            {% for message in get_flashed_messages() %}
+            <p class=message>{{ message }}
+            {% endfor %}
+
+            {% block content %}
+            {% endblock %}
+
+        </div>
+        {% block footer %}
+            <div id="footer">
+                 <p>All original content is licensed under the cc-wiki license.</p>
+            </div>
+        {% endblock %}
+    </body>
+</html>
