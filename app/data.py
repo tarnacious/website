@@ -63,3 +63,12 @@ class Post(Base):
     head = Column(Text())
     footer = Column(Text())
     date = Column(DateTime())
+
+
+class Comment(Base):
+    __tablename__ = 'comments'
+    id = Column(Integer, primary_key=True)
+    post_id = Column(Integer, ForeignKey('posts.id'))
+    user_id = Column(Integer, ForeignKey('users.id'))
+    html = Column(Text())
+    text = Column(Text())

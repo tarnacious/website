@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, abort
 from app.data import db_session, Post
+from sqlalchemy import desc
 
 blog = Blueprint('blog', __name__,
                  template_folder='templates')
@@ -7,7 +8,7 @@ blog = Blueprint('blog', __name__,
 
 @blog.route('/journal')
 def index():
-    posts = Post.query.all()
+    posts = db_session.query(Post).order_by(desc(Post.date))
     return render_template('blog/index.html', posts=posts)
 
 @blog.route('/journal/<slug>')
