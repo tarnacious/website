@@ -1,6 +1,24 @@
 {% extends "layout.html" %}
+
+{% block header %}
+<div id="header">
+    <p>The Journals of</p>
+    <h1>
+        <a href="/">Tarn Barford</a>
+    </h1>
+</div>
+{% endblock %}
+
 {% block content %}
-  <p>
-  LIST OF POSTS
+<ul id="posts">
+    {% for post in posts %}
+    <li>
+    <label>{{ post['date'].strftime('%h %d, %Y') }}</label>
+    <p>
+    <a href="/journal/{{ post['slug'] }}">{{ post['title'] }}</a>
     </p>
+    <div style="clear: both" />
+    </li>
+    {% endfor %}
+</ul>
 {% endblock %}

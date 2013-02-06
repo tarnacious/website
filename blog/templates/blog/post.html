@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+
+{% block head %}
+    <link href="/static/highlight.css" media="screen" rel="stylesheet" type="text/css" />
+    {{ post.head|safe }}
+{% endblock %}
+
+{% block footer %}
+    {{ post.footer|safe }}
+{% endblock %}
+
+{% block header %}
+<div id="header">
+    <p>From the <a href="/journal">Journals</a> of <a href="/">Tarn Barford</a></p>
+    <h1>
+        {{ post.title }}
+    </h1>
+    <p>
+    {{ post['date'].strftime('%h %d, %Y') }}
+    </p>
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="post_content">
+    {{ post.html|safe }}
+</div>
+{% if False %}
+<div id="comments">
+    {% if comments %}
+    <h3>Discussion</h3>
+    <ul>
+        {% for comment in comments %}
+        <li>
+            {% if str(comment['comment_id']) == comment_id %}
+                COMMENT_FORM
+            {% else %}
+                <a name="{{ comment['comment_id'] }}"></a>
+                {% if user and user['uid'] == comment['userid'] %}
+                <a href="/journal/{{ post["slug"] }}/comment?comment_id={{ comment['comment_id'] }}#edit">Edit</a>
+                {% endif %}
+                <br />
+                {{ comment.html|safe }}
+                <div class="attribution">
+                    <a href="{{ comment['url'] }}" target="_blank">{{ comment['name'] }}</a>,
+                    <span class="date">{{ comment['created'] }}</span>
+                </div>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if user and form and comment_id == None %}
+        COMMENT FORM
+    {% else %}
+        <a href="/journal/{{ post["slug"] }}/comment#edit">Comment</a>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}
