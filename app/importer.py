@@ -4,6 +4,7 @@ import markdown
 from dateutil import parser
 from markup import syntax_highlight
 import re
+from app.data import Post
 
 
 def slugify(name):
@@ -35,14 +36,14 @@ def read_post(name):
     html = markdown.markdown(text)
     html = syntax_highlight(html)
 
-    return {'title': title,
-            'date': date,
-            'slug': slugify(name),
-            'text': text,
-            'html': html,
-            'head': head,
-            'footer': footer,
-            }
+    post = Post(title=title,
+                date=date,
+                slug=slugify(name),
+                text=text,
+                html=html,
+                head=head,
+                footer=footer)
+    return post
 
 
 def read_posts():
@@ -51,3 +52,20 @@ def read_posts():
     all_posts = [read_post(folder) for folder in folders]
     posts = [post for post in all_posts if post is not None]
     return posts
+
+
+def import_posts():
+    from app.data import db_session
+    posts = read_posts()
+    for post in posts:
+        if post:
+            find_post = Post.query.filter_by(slug=post.slug).first()
+
+            if find_post is None:
+                db_session.add(post)
+            else:
+                print "NOT updating"
+                #db_session.update(post)
+                pass
+
+            db_session.commit()

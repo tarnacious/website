@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Text, DateTime
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from app import app
@@ -58,6 +58,8 @@ class Post(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String(200))
     slug = Column(String(200))
-    html = Column(String(200))
-    text = Column(String(200))
-    date = Column(String(200))
+    html = Column(Text())
+    text = Column(Text())
+    head = Column(Text())
+    footer = Column(Text())
+    date = Column(DateTime())

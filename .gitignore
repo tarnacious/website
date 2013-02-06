@@ -8,3 +8,6 @@ etc/
 
 # logging
 var/
+
+# posts folder
+posts/
