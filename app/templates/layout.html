@@ -11,6 +11,9 @@
     </head>
     <body>
         <div id="container">
+            {% if g.user %}
+                <a href="/auth/">Logged In</a>
+            {% endif %}
             {% block header %}
             <div id="header">
                 <p>

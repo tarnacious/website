@@ -4,7 +4,6 @@ import sessions
 from author import auth
 
 
-@auth.before_request
 def before_request():
     g.user = None
     session_id = request.cookies.get('session_id')
@@ -14,7 +13,6 @@ def before_request():
             g.user = User.query.get(session['user_id'])
 
 
-@auth.after_request
 def after_request(response):
     db_session.remove()
     return response
