@@ -71,5 +71,8 @@ class Comment(Base):
     id = Column(Integer, primary_key=True)
     post_id = Column(Integer, ForeignKey('posts.id'))
     user_id = Column(Integer, ForeignKey('users.id'))
+    name = Column(String(60))
+    email = Column(String(200))
+    website = Column(String(200))
     html = Column(Text())
     text = Column(Text())

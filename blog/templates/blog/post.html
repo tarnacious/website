@@ -26,37 +26,72 @@
 <div id="post_content">
     {{ post.html|safe }}
 </div>
-{% if False %}
 <div id="comments">
     {% if comments %}
     <h3>Discussion</h3>
     <ul>
         {% for comment in comments %}
         <li>
-            {% if str(comment['comment_id']) == comment_id %}
+        {#  {% if str(comment['comment_id']) == comment_id %}
+
                 COMMENT_FORM
             {% else %}
-                <a name="{{ comment['comment_id'] }}"></a>
-                {% if user and user['uid'] == comment['userid'] %}
-                <a href="/journal/{{ post["slug"] }}/comment?comment_id={{ comment['comment_id'] }}#edit">Edit</a>
+                #}
+                <a name="{{ comment.id }}"></a>
+                {% if g.user and comment.user_id == g.user.id %}
+                <a href="/journal/{{ post.slug }}/comment?comment_id={{ comment.id }}#edit">Edit</a>
                 {% endif %}
                 <br />
+                <div>
                 {{ comment.html|safe }}
+
+                {{ comment.text|safe }}
                 <div class="attribution">
-                    <a href="{{ comment['url'] }}" target="_blank">{{ comment['name'] }}</a>,
-                    <span class="date">{{ comment['created'] }}</span>
+                    <a href="{{ comment.url }}" target="_blank">{{ comment.name }}</a>,
+                    <span class="date">{{ comment.created }}</span>
                 </div>
+                {#
             {% endif %}
+            #}
         </li>
         {% endfor %}
     </ul>
     {% endif %}
+    {#
+    {% if g.user and form and comment_id == None %}
+    #}
+    {% if g.user and form  %}
+    <h1>COMMENT FORM</h1>
 
-    {% if user and form and comment_id == None %}
-        COMMENT FORM
+<div id="comment_form">
+    <a name="edit"> </a>
+    {% if form.errors %}
+        <ul class="errors">
+            {% for field, errors in form.errors.iteritems() %}
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <form accept-charset="UTF-8" action="/journal/{{post["slug"]}}#comment" method="post">
+        <div class="field text">
+            {{ form.name.label|safe }}{{ form.name()|safe }}
+        </div>
+        <div class="field text">
+            {{ form.url.label|safe }}{{ form.url()|safe }}
+        </div>
+        <div class="clear"></div>
+        <div class="field">
+            {{ form.comment.label|safe }}{{ form.comment()|safe }}
+        </div>
+        <div class="actions">
+            <input id="comment_submit" name="commit" type="submit" value="Publish" />
+        </div>
+    </form>
+</div>
     {% else %}
         <a href="/journal/{{ post["slug"] }}/comment#edit">Comment</a>
     {% endif %}
 </div>
-{% endif %}
 {% endblock %}
