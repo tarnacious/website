@@ -28,7 +28,7 @@
 </div>
 <div id="comments">
     {% if comments %}
-    <h3>Discussion</h3>
+    <h3>Comments</h3>
     <ul>
         {% for comment in comments %}
         <li>
@@ -54,6 +54,8 @@
             {% endif %}
             #}
         </li>
+        {% else %}
+        <p>There are no comments</p>
         {% endfor %}
     </ul>
     {% endif %}
@@ -61,10 +63,10 @@
     {% if g.user and form and comment_id == None %}
     #}
     {% if g.user and form  %}
-    <h1>COMMENT FORM</h1>
 
 <div id="comment_form">
     <a name="edit"> </a>
+    <h3>Comment</h3>
     {% if form.errors %}
         <ul class="errors">
             {% for field, errors in form.errors.iteritems() %}
@@ -75,19 +77,20 @@
         </ul>
     {% endif %}
     <form accept-charset="UTF-8" action="/journal/{{post["slug"]}}#comment" method="post">
-        <div class="field text">
+        <div class="field name">
             {{ form.name.label|safe }}{{ form.name()|safe }}
         </div>
-        <div class="field text">
+        <div class="field link">
             {{ form.url.label|safe }}{{ form.url()|safe }}
         </div>
         <div class="clear"></div>
         <div class="field">
-            {{ form.comment.label|safe }}{{ form.comment()|safe }}
+            {{ form.comment()|safe }}
         </div>
         <div class="actions">
             <input id="comment_submit" name="commit" type="submit" value="Publish" />
         </div>
+        <div class="clear"></div>
     </form>
 </div>
     {% else %}

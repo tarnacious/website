@@ -11,32 +11,43 @@
     </head>
     <body>
         <div id="container">
-            {% if g.user %}
-                <a href="/auth/">Logged In</a>
-            {% endif %}
-            {% block header %}
+
+
             <div id="header">
-                <p>
-                The <a href="/journal">Journal</a> of</p>
-                <h1>
-                    Tarn Barford
-                </h1>
-                <p>
-                </p>
+                {% block header %}
+                    <p>
+                    The <a href="/journal">Journal</a> of</p>
+                    <h1>
+                        Tarn Barford
+                    </h1>
+                    <p>
+                    </p>
+                {% endblock %}
+                {% block user %}
+                    {% if g.user %}
+                        <a class="auth_link" href="/auth/">profile</a>
+                    {% endif %}
+                {% endblock %}
+
+                {% block flash %} 
+                {% if get_flashed_messages() %}
+                    <div class="messages">
+                        {% for message in get_flashed_messages() %}
+                        <p class=message>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% endblock %}
             </div>
-            {% endblock %}
-            {% for message in get_flashed_messages() %}
-            <p class=message>{{ message }}
-            {% endfor %}
 
             {% block content %}
             {% endblock %}
 
         </div>
+        <div id="footer">
+                <p>All original content is licensed under the cc-wiki license.</p>
+        </div>
         {% block footer %}
-            <div id="footer">
-                 <p>All original content is licensed under the cc-wiki license.</p>
-            </div>
         {% endblock %}
     </body>
 </html>

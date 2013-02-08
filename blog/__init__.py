@@ -15,7 +15,7 @@ class CommentForm(Form):
                                          message="Name Required")]
 
     name = TextField('Name', name_validators, default='')
-    url = TextField('URL', [validators.Length(max=200)], default='')
+    url = TextField('Link', [validators.Length(max=200)], default='')
     validator = [validators.Length(min=1, max=5000,
                                    message="Comment Required")]
     comment = TextAreaField('Comment', validator)
