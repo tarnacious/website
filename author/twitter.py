@@ -4,6 +4,7 @@ from author import auth
 from app.data import User, db_session
 from app import app
 from author import sessions
+from author import parse_next_url
 
 oauth = OAuth()
 
@@ -38,8 +39,10 @@ def login_twitter():
     in.  When all worked out as expected, the remote application will
     redirect back to the callback URL provided.
     """
-    return twitter.authorize(
-        callback=url_for('oauth_authorized', next=request.args.get('next') or request.referrer or None))
+    next_url = request.args.get('next') or request.referrer
+    callback_url = url_for('author.oauth_authorized', next=next_url)
+    return twitter.authorize(callback=callback_url)
+
 
 
 @auth.route('/auth/oauth-authorized')
@@ -58,7 +61,8 @@ def oauth_authorized(resp):
     the application submitted.  Note that Twitter itself does not really
     redirect back unless the user clicks on the application name.
     """
-    next_url = request.args.get('next') or url_for('index')
+
+    next_url = parse_next_url(request.args.get('next')) or url_for('index')
     if resp is None:
         flash(u'You denied the request to sign in.')
         return redirect(next_url)

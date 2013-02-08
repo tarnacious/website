@@ -1,9 +1,10 @@
-from flask import redirect, url_for, make_response, flash
+from flask import redirect, url_for, make_response, flash, request
 from flask_oauth import OAuth
 from app import app
 from author import auth
 from app.data import User, db_session
 from author import sessions
+from author import parse_next_url
 import json
 oauth = OAuth()
 
@@ -22,13 +23,14 @@ google = oauth.remote_app('google',
 
 @auth.route('/auth/google')
 def login_google():
-    callback = url_for('authorized', _external=True)
+    callback = url_for('author.authorized', _external=True)
     return google.authorize(callback=callback)
 
 
 @auth.route(app.config['GOOGLE_REDIRECT_URI'])
 @google.authorized_handler
 def authorized(resp):
+
     access_token = resp['access_token']
 
     info = request_userinfo(access_token)
@@ -44,8 +46,10 @@ def authorized(resp):
         db_session.add(user)
         db_session.commit()
 
+
     session_id = sessions.start(user)
-    resp = make_response(redirect(url_for('index')))
+    next_url = parse_next_url(request.args.get('next')) or url_for('index')
+    resp = make_response(redirect(next_url))
     resp.set_cookie('session_id', session_id)
     flash('You were signed in')
     return resp

@@ -91,7 +91,7 @@
     </form>
 </div>
     {% else %}
-        <a href="/journal/{{ post["slug"] }}/comment#edit">Comment</a>
+        <a href="/auth?next=/journal/{{ post["slug"] }}#edit">Comment</a>
     {% endif %}
 </div>
 {% endblock %}
