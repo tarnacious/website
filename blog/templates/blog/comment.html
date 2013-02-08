@@ -1,0 +1,19 @@
+<a name="{{ comment.id }}"></a>
+<div>
+    {% if comment.html %}
+        {{ comment.html|safe }}
+    {% else %}
+    <p><em>Comment is empty</em></p>
+    {% endif %}
+</div>
+<div class="attribution">
+    {% if comment.url %}
+        <a href="{{ comment.url }}" target="_blank">{{ comment.name }}</a>,
+    {% else %}
+        {{ comment.name }}
+    {% endif %} -
+    <span class="date">{{ comment.timestamp.strftime('%h %d, %Y') }}</span>
+    {% if g.user and comment.user_id == g.user.id %}
+    <a href="/journal/{{ post.slug }}?comment_id={{ comment.id }}#edit">Edit</a>
+    {% endif %}
+</div>

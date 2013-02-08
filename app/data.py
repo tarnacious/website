@@ -3,7 +3,6 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from app import app
 import uuid
-import author
 
 engine = create_engine(app.config['DATABASE_URI'])
 db_session = scoped_session(sessionmaker(autocommit=False,
@@ -39,6 +38,7 @@ def session_get(session_id):
 
 class User(Base):
     __tablename__ = 'users'
+    __table_args__ = {'sqlite_autoincrement': True}
     id = Column(Integer, primary_key=True)
     name = Column(String(60))
     email = Column(String(200))
@@ -76,3 +76,4 @@ class Comment(Base):
     website = Column(String(200))
     html = Column(Text())
     text = Column(Text())
+    timestamp = Column(DateTime())

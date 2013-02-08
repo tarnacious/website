@@ -1,0 +1,33 @@
+<div id="comment_form">
+    <a name="edit"> </a>
+    {% if form.errors %}
+        <ul class="errors">
+            {% for field, errors in form.errors.iteritems() %}
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <form accept-charset="UTF-8" action="/journal/{{post["slug"]}}{% if edit_comment %}?comment_id={{ edit_comment.id }}{% endif %}" method="post">
+        <div class="field name">
+            {{ form.name.label|safe }}{{ form.name()|safe }}
+        </div>
+        <div class="field link">
+            {{ form.url.label|safe }}{{ form.url()|safe }}
+        </div>
+        <div class="clear"></div>
+        <div class="field">
+            {{ form.comment()|safe }}
+        </div>
+        <div class="actions">
+            {% if edit_comment %}
+                <input id="comment_delete" name="commit" type="submit" value="Delete" />
+                <input id="comment_submit" name="commit" type="submit" value="Update" />
+            {% else %}
+                <input id="comment_submit" name="commit" type="submit" value="Publish" />
+            {% endif %}
+        </div>
+        <div class="clear"></div>
+    </form>
+</div>
