@@ -410,3 +410,23 @@ input[type=submit] {
     float: right;
 }
 
+#comments #comment_form input[type=text]
+{
+    border: 1px solid #E6E6E6;
+    padding: 7px;
+    width: 350px;
+}
+
+.profile_form input[type=text]
+{
+    border: 1px solid #E6E6E6;
+    padding: 7px;
+    width: 350px;
+    margin-bottom: 10px;
+}
+
+.profile_form label
+{
+    display: inline-block;
+    width: 80px;
+}

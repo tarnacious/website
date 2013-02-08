@@ -1,12 +1,20 @@
 {% extends "layout.html" %}
 
+{% block user %}
+    {# This is the user page. #}
+{% endblock %}
+
 {% block header %}
 <div id="header">
     <p>
     The <a href="/">Website</a> of <a href="/">Tarn Barford</a>
     </p>
     <h1>
+  {% if g.user %}
+  Account
+        {% else %}
         Log in 
+        {% endif %}
     </h1>
     <p>
     </p>
@@ -16,8 +24,38 @@
 {% block content %}
 
   {% if g.user %}
-  <li><a href="{{ url_for('author.edit_profile') }}">profile</a>
-  <li><a href="{{ url_for('author.logout') }}">sign out [{{ g.user.name }}]</a>
+  <h3>
+      Profile
+  </h3>
+  <p>The profile is not required but the email can be used to varifiy the account if there is a problem with the authentication provider and the name and url will be used by default in comments.</p>
+  <div class="profile_form">
+    <form accept-charset="UTF-8" action="{{ url_for('author.index') }}" method="post">
+        <div class="field name">
+            {{ form.name.label|safe }}{{ form.name()|safe }}
+        </div>
+        <div class="field link">
+            {{ form.url.label|safe }}{{ form.url()|safe }}
+        </div>
+        <div class="field link">
+            {{ form.email.label|safe }}{{ form.email()|safe }}
+        </div>
+        <div class="clear"></div>
+        <input type=submit value="Update profile">
+        <div class="clear"></div>
+    </form>
+</div>
+  <h3>
+      Session
+  </h3>
+  <p>You are currently logged in via {{ g.user.provider }}.</p>
+  <form method="post" action="{{ url_for('author.logout') }}">
+        <input type="submit" value="Sign out"/>
+  </form>
+      <h3>Account</h3>
+      <p>Permanently delete account. Any comments will be forever orphaned.
+    <form accept-charset="UTF-8" action="{{ url_for('author.index') }}" method="post">
+      <input type=submit name=delete value="Delete account">
+  </form>
   {% else %}
 
     <p>

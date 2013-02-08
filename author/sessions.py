@@ -22,4 +22,5 @@ def find(session_id):
 
 
 def remove(session_id):
-    redis_client.delete(session_id)
+    if session_id:
+        redis_client.delete(session_id)

@@ -2,6 +2,13 @@ from flask import g, render_template, redirect, url_for, request, flash
 from app.data import db_session, User
 import sessions
 from author import auth
+from wtforms import Form, TextField
+
+
+class ProfileForm(Form):
+    name = TextField('Name', default='')
+    url = TextField('Link', default='')
+    email = TextField('Email', default='')
 
 
 def before_request():
@@ -18,7 +25,7 @@ def after_request(response):
     return response
 
 
-@auth.route('/auth/logout')
+@auth.route('/auth/logout', methods=['POST'])
 def logout():
     flash('You have been signed out')
     session_id = request.cookies.get('session_id')
@@ -27,26 +34,30 @@ def logout():
     return redirect(request.referrer or url_for('index'))
 
 
-@auth.route('/auth/')
+@auth.route('/auth/', methods=['GET'])
 def index():
-    return render_template('author/index.html')
+    form = ProfileForm()
+    if g.user:
+        form.name.data = g.user.name
+        form.url.data = g.user.website
+        form.email.data = g.user.email
+    return render_template('author/index.html', form=form)
 
 
-@auth.route('/auth/profile', methods=['GET', 'POST'])
-def edit_profile():
+@auth.route('/auth/', methods=['POST'])
+def account():
     if g.user is None:
-        return redirect(url_for('index'))
-    form = dict(name=g.user.name, email=g.user.email)
-    if request.method == 'POST':
-        if 'delete' in request.form:
-            db_session.delete(g.user)
-            db_session.commit()
-            #TODO: Delete session
-            flash(u'Profile deleted')
-            return redirect(url_for('index'))
-            flash(u'Profile saved')
-            g.user.name = request.form['name']
-            g.user.email = request.form['email']
-            db_session.commit()
-            return redirect(url_for('edit_profile'))
-    return render_template('edit_profile.html', form=form)
+        return redirect(url_for('author.index'))
+    if 'delete' in request.form:
+        session_id = request.cookies.get('session_id')
+        sessions.remove(session_id)
+        db_session.delete(g.user)
+        db_session.commit()
+        flash(u'Profile permanently deleted')
+        return redirect(url_for('author.index'))
+    g.user.name = request.form['name']
+    g.user.email = request.form['email']
+    g.user.website = request.form['url']
+    db_session.commit()
+    flash(u'Profile updated')
+    return redirect(url_for('author.index'))
