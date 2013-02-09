@@ -1,8 +1,9 @@
-from flask import g, render_template, redirect, url_for, request, flash
+from flask import g, render_template, redirect, url_for, request, flash, make_response
 from app.data import db_session, User
 import sessions
 from author import auth
 from wtforms import Form, TextField
+from datetime import datetime, timedelta
 
 
 class ProfileForm(Form):
@@ -31,7 +32,9 @@ def logout():
     session_id = request.cookies.get('session_id')
     if session_id:
         sessions.remove(session_id)
-    return redirect(request.referrer or url_for('index'))
+    resp = make_response(redirect(request.referrer or url_for('index')))
+    resp.set_cookie('session_id', '', expires=datetime.now() - timedelta(days=1))
+    return resp
 
 
 @auth.route('/auth/', methods=['GET'])
@@ -41,7 +44,8 @@ def index():
         form.name.data = g.user.name
         form.url.data = g.user.website
         form.email.data = g.user.email
-    return render_template('author/index.html', form=form)
+    next_url = request.args.get('next') or url_for('index')
+    return render_template('author/index.html', form=form, next_url=next_url)
 
 
 @auth.route('/auth/', methods=['POST'])

@@ -54,7 +54,8 @@ def post_view(slug):
                            post=post,
                            edit_comment=edit_comment,
                            comments=comments,
-                           form=comment_form)
+                           form=comment_form,
+                           next_url=url_for('blog.post_view', slug=post.slug))
 
 
 @blog.route('/journal/<slug>', methods=['POST'])
@@ -97,4 +98,5 @@ def post_comment(slug):
     return render_template('blog/post.html',
                            post=post,
                            comments=comments,
-                           form=comment_form)
+                           form=comment_form,
+                           next_url=url_for('blog.post_view', slug=post.slug))

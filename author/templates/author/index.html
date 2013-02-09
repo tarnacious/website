@@ -7,11 +7,11 @@
 {% block header %}
 <div id="header">
     <p>
-    The <a href="/">Website</a> of <a href="/">Tarn Barford</a>
+        The <a href="/journal">Journal</a> of <a href="/">Tarn Barford</a>
     </p>
     <h1>
-  {% if g.user %}
-  Account
+        {% if g.user %}
+        Account
         {% else %}
         Log in 
         {% endif %}
@@ -24,6 +24,7 @@
 {% block content %}
 
   {% if g.user %}
+  <div class="account_page">
   <h3>
       Profile
   </h3>
@@ -56,6 +57,7 @@
     <form accept-charset="UTF-8" action="{{ url_for('author.index') }}" method="post">
       <input type=submit name=delete value="Delete account">
   </form>
+  </div>
   {% else %}
 
     <p>
@@ -80,7 +82,7 @@
         <a href="{{ url_for('author.login_twitter') }}">
             <img alt="Authenticate with Twitter" src="/static/auth_buttons/twitter_64.png?1310614680" />
         </a>
-        <a href="{{ url_for('author.login_google') }}">
+        <a href="{{ url_for('author.login_google', next=next_url) }}">
             <img alt="Authenticate with Google" src="/static/auth_buttons/google_64.png?1310614680" />
         </a>
         </li>

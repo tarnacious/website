@@ -5,6 +5,10 @@ body {
     background-color: #FFFFFF;
 }
 
+input {
+    font-size:18px;
+}
+
 a, a:link {
     color:#000;
 }
@@ -429,4 +433,14 @@ input[type=submit] {
 {
     display: inline-block;
     width: 80px;
+}
+
+.account_page h3
+{
+    font-variant:small-caps;
+}
+
+.account_page label
+{
+    font-variant:small-caps;
 }

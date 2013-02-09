@@ -4,7 +4,7 @@ from app import app
 from author import auth
 from app.data import User, db_session
 from author import sessions
-from author import parse_next_url
+from datetime import datetime, timedelta
 import json
 oauth = OAuth()
 
@@ -23,8 +23,11 @@ google = oauth.remote_app('google',
 
 @auth.route('/auth/google')
 def login_google():
+    next_url = request.args.get('next') or url_for('index')
     callback = url_for('author.authorized', _external=True)
-    return google.authorize(callback=callback)
+    resp = google.authorize(callback=callback)
+    resp.set_cookie('next', next_url)
+    return resp
 
 
 @auth.route(app.config['GOOGLE_REDIRECT_URI'])
@@ -46,11 +49,11 @@ def authorized(resp):
         db_session.add(user)
         db_session.commit()
 
-
     session_id = sessions.start(user)
-    next_url = parse_next_url(request.args.get('next')) or url_for('index')
-    resp = make_response(redirect(next_url))
+    redirect_to = request.cookies.get('next')
+    resp = make_response(redirect(redirect_to))
     resp.set_cookie('session_id', session_id)
+    resp.set_cookie('next', '', expires=datetime.now() - timedelta(days=1))
     flash('You were signed in')
     return resp
 
