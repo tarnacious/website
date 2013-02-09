@@ -1,6 +1,6 @@
 from flask import g, render_template, redirect, url_for, request, flash, make_response
 from app.data import db_session, User
-import sessions
+from app import sessions
 from author import auth
 from wtforms import Form, TextField
 from datetime import datetime, timedelta

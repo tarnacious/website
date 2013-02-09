@@ -2,7 +2,8 @@ from flask import request, g, flash, redirect, make_response
 from app import app
 from flask_openid import OpenID
 from app.data import User, db_session
-from author import auth, sessions
+from author import auth
+from app import sessions
 from urlparse import urlparse
 from author import parse_next_url
 

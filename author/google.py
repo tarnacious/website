@@ -3,7 +3,7 @@ from flask_oauth import OAuth
 from app import app
 from author import auth
 from app.data import User, db_session
-from author import sessions
+from app import sessions
 from datetime import datetime, timedelta
 import json
 oauth = OAuth()

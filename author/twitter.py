@@ -3,7 +3,7 @@ from flask_oauth import OAuth
 from author import auth
 from app.data import User, db_session
 from app import app
-from author import sessions
+from app import sessions
 from author import parse_next_url
 
 oauth = OAuth()
@@ -42,7 +42,6 @@ def login_twitter():
     next_url = request.args.get('next') or request.referrer
     callback_url = url_for('author.oauth_authorized', next=next_url)
     return twitter.authorize(callback=callback_url)
-
 
 
 @auth.route('/auth/oauth-authorized')
