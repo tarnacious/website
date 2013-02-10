@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, abort, request, g, flash, redirect
 from app.data import db_session, Post, Comment
 from datetime import datetime
 from sqlalchemy import desc
+from app.markup import markup_comment
 
 blog = Blueprint('blog', __name__,
                  template_folder='templates')
@@ -54,8 +55,7 @@ def post_view(slug):
                            post=post,
                            edit_comment=edit_comment,
                            comments=comments,
-                           form=comment_form,
-                           next_url=url_for('blog.post_view', slug=post.slug))
+                           form=comment_form)
 
 
 @blog.route('/journal/<slug>', methods=['POST'])
@@ -75,7 +75,7 @@ def post_comment(slug):
                 flash("You must be logged in")
                 return redirect(url_for('blog.post_view', slug=post.slug))
             edit_comment.text = comment_form.comment.data
-            edit_comment.html = comment_form.comment.data
+            edit_comment.html = markup_comment(comment_form.comment.data)
             edit_comment.website = comment_form.url.data
             edit_comment.name = comment_form.name.data
             db_session.commit()
@@ -85,7 +85,7 @@ def post_comment(slug):
             comment.user_id = g.user.id
             comment.post_id = post.id
             comment.text = comment_form.comment.data
-            comment.html = comment_form.comment.data
+            comment.html = markup_comment(comment_form.comment.data)
             comment.website = comment_form.url.data
             comment.name = comment_form.name.data
             comment.timestamp = datetime.now()
@@ -98,5 +98,4 @@ def post_comment(slug):
     return render_template('blog/post.html',
                            post=post,
                            comments=comments,
-                           form=comment_form,
-                           next_url=url_for('blog.post_view', slug=post.slug))
+                           form=comment_form)

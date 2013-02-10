@@ -15,8 +15,9 @@ def markup_comment(text):
 
 
 def sanitize(html):
-    from lxml.html.clean import clean_html
-    return clean_html(html)
+    from lxml.html.clean import Cleaner
+    cleaner = Cleaner(remove_tags=['img'])
+    return cleaner.clean_html(html)
 
 
 def syntax_highlight(html):
