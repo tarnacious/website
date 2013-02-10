@@ -1,4 +1,4 @@
-An authentication system.
+My blog.
 
 # With virtualenv
 
@@ -8,7 +8,7 @@ An authentication system.
 
 # Configure
 
-    $ export AUTHOR_SETTINGS=/path/to/settings
+    $ export APP_SETTINGS=/path/to/settings
 
 # Create database
 

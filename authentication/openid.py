@@ -25,7 +25,7 @@ def openid():
                                                   'nickname'])
     error = oid.fetch_error()
     flash(error or "OpenID validation was not successful")
-    return redirect(url_for('authenication.index'))
+    return redirect(url_for('authentication.index'))
 
 
 @oid.after_login

@@ -4,7 +4,7 @@ from werkzeug.contrib.fixers import ProxyFix
 app = Flask(__name__)
 
 app.config.from_object('app.settings')
-app.config.from_envvar('AUTHOR_SETTINGS', silent=True)
+app.config.from_envvar('APP_SETTINGS', silent=True)
 
 if not app.debug:
     import logging
