@@ -33,7 +33,7 @@ def get_twitter_token():
         return user.oauth_token, user.oauth_secret
 
 
-@auth.route('/auth/twitter')
+@auth.route('/twitter')
 def login_twitter():
     """Calling into authorize will cause the OpenID auth machinery to kick
     in.  When all worked out as expected, the remote application will
@@ -44,7 +44,7 @@ def login_twitter():
     return twitter.authorize(callback=callback_url)
 
 
-@auth.route('/auth/oauth-authorized')
+@auth.route('/oauth-authorized')
 @twitter.authorized_handler
 def oauth_authorized(resp):
     """Called after authorization.  After this function finished handling,

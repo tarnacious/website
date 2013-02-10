@@ -10,7 +10,7 @@ from author import parse_next_url
 oid = OpenID(app)
 
 
-@auth.route('/auth/openid', methods=['GET', 'POST'])
+@auth.route('/openid', methods=['GET', 'POST'])
 @oid.loginhandler
 def openid():
     if g.user is not None:

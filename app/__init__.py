@@ -26,7 +26,7 @@ from author import auth
 import author
 from blog import blog
 
-app.register_blueprint(auth)
+app.register_blueprint(auth, url_prefix="/authentication")
 app.register_blueprint(blog)
 
 

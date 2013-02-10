@@ -26,7 +26,7 @@ def after_request(response):
     return response
 
 
-@auth.route('/auth/logout', methods=['POST'])
+@auth.route('/logout', methods=['POST'])
 def logout():
     flash('You have been signed out')
     session_id = request.cookies.get('session_id')
@@ -37,7 +37,7 @@ def logout():
     return resp
 
 
-@auth.route('/auth/', methods=['GET'])
+@auth.route('/', methods=['GET'])
 def index():
     form = ProfileForm()
     if g.user:
@@ -48,7 +48,7 @@ def index():
     return render_template('author/index.html', form=form, next_url=next_url)
 
 
-@auth.route('/auth/', methods=['POST'])
+@auth.route('/', methods=['POST'])
 def account():
     if g.user is None:
         return redirect(url_for('author.index'))
