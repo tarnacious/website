@@ -74,24 +74,32 @@ def post_comment(slug):
             if not edit_comment.user_id == g.user.id:
                 flash("You must be logged in")
                 return redirect(url_for('blog.post_view', slug=post.slug))
+
+            if request.form.get('action') == "Delete":
+                db_session.delete(edit_comment)
+                db_session.commit()
+                flash('Comment Deleted')
+                return redirect(url_for('blog.post_view', slug=post.slug))
+
             edit_comment.text = comment_form.comment.data
             edit_comment.html = markup_comment(comment_form.comment.data)
             edit_comment.website = comment_form.url.data
             edit_comment.name = comment_form.name.data
             db_session.commit()
             flash('Comment Updated')
-        else:
-            comment = Comment()
-            comment.user_id = g.user.id
-            comment.post_id = post.id
-            comment.text = comment_form.comment.data
-            comment.html = markup_comment(comment_form.comment.data)
-            comment.website = comment_form.url.data
-            comment.name = comment_form.name.data
-            comment.timestamp = datetime.now()
-            db_session.add(comment)
-            db_session.commit()
-            flash('Comment Saved')
+            return redirect(url_for('blog.post_view', slug=post.slug))
+
+        comment = Comment()
+        comment.user_id = g.user.id
+        comment.post_id = post.id
+        comment.text = comment_form.comment.data
+        comment.html = markup_comment(comment_form.comment.data)
+        comment.website = comment_form.url.data
+        comment.name = comment_form.name.data
+        comment.timestamp = datetime.now()
+        db_session.add(comment)
+        db_session.commit()
+        flash('Comment Posted')
         return redirect(url_for('blog.post_view', slug=post.slug))
 
     comments = Comment.query.filter_by(post_id=post.id)
