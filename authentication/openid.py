@@ -1,16 +1,16 @@
-from flask import request, g, flash, redirect, make_response
+from flask import request, g, flash, redirect, make_response, url_for
 from app import app
 from flask_openid import OpenID
 from app.data import User, db_session
-from author import auth
+from authentication import authentication
 from app import sessions
 from urlparse import urlparse
-from author import parse_next_url
+from authentication import parse_next_url
 
 oid = OpenID(app)
 
 
-@auth.route('/openid', methods=['GET', 'POST'])
+@authentication.route('/openid', methods=['GET', 'POST'])
 @oid.loginhandler
 def openid():
     if g.user is not None:
@@ -25,7 +25,7 @@ def openid():
                                                   'nickname'])
     error = oid.fetch_error()
     flash(error or "OpenID validation was not successful")
-    return redirect('/auth/')
+    return redirect(url_for('authenication.index'))
 
 
 @oid.after_login
@@ -43,7 +43,7 @@ def create_or_login(resp):
 
     session_id = sessions.start(user)
     next_url = parse_next_url(request.args.get('next'))
-    resp = make_response(redirect(next_url or '/auth/'))
+    resp = make_response(redirect(next_url or url_for('authentication.index')))
     resp.set_cookie('session_id', session_id)
     flash('You were signed in')
     return resp

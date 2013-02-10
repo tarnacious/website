@@ -1,9 +1,9 @@
-from flask import Blueprint, current_app
+from flask import Blueprint
 from urlparse import urlparse, parse_qs
 
 
-auth = Blueprint('author', __name__,
-                 template_folder='templates')
+authentication = Blueprint('authentication', __name__,
+                           template_folder='templates')
 
 
 def parse_next_url(url):

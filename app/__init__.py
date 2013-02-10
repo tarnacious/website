@@ -22,22 +22,20 @@ if not app.debug:
 
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
-from author import auth
-import author
-from blog import blog
+import authentication
+import blog
 
-app.register_blueprint(auth, url_prefix="/authentication")
-app.register_blueprint(blog)
-
+app.register_blueprint(authentication.authentication, url_prefix="/authentication")
+app.register_blueprint(blog.blog)
 
 @app.before_request
 def before_request():
-    author.before_request()
+    authentication.before_request()
 
 
-@auth.after_request
+@app.after_request
 def after_request(response):
-    return author.after_request()
+    return authentication.after_request(response)
 
 
 @app.route('/')

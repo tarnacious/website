@@ -1,10 +1,10 @@
 from flask import request, redirect, url_for, flash, g, make_response
 from flask_oauth import OAuth
-from author import auth
+from authentication import authentication
 from app.data import User, db_session
 from app import app
 from app import sessions
-from author import parse_next_url
+from authentication import parse_next_url
 
 oauth = OAuth()
 
@@ -33,18 +33,18 @@ def get_twitter_token():
         return user.oauth_token, user.oauth_secret
 
 
-@auth.route('/twitter')
+@authentication.route('/twitter')
 def login_twitter():
     """Calling into authorize will cause the OpenID auth machinery to kick
     in.  When all worked out as expected, the remote application will
     redirect back to the callback URL provided.
     """
     next_url = request.args.get('next') or request.referrer
-    callback_url = url_for('author.oauth_authorized', next=next_url)
+    callback_url = url_for('authentication.oauth_authorized', next=next_url)
     return twitter.authorize(callback=callback_url)
 
 
-@auth.route('/oauth-authorized')
+@authentication.route('/oauth-authorized')
 @twitter.authorized_handler
 def oauth_authorized(resp):
     """Called after authorization.  After this function finished handling,
