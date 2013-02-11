@@ -197,13 +197,13 @@ pre.prettyprint {
 
 #comments #comment_form input[type=text]
 {
-    border: 1px solid #E6E6E6;
+    border: 1px solid gray;
     padding: 7px;
     width: 350px;
 }
 #comments #comment_form textarea
 {
-    border: 1px solid #E6E6E6;
+    border: 1px solid gray;
     padding: 7px;
     height: 300px;
 }
@@ -416,14 +416,14 @@ input[type=submit] {
 
 #comments #comment_form input[type=text]
 {
-    border: 1px solid #E6E6E6;
+    border: 1px solid gray;
     padding: 7px;
     width: 350px;
 }
 
 .profile_form input[type=text]
 {
-    border: 1px solid #E6E6E6;
+    border: 1px solid gray;
     padding: 7px;
     width: 350px;
     margin-bottom: 10px;
