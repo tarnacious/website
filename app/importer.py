@@ -4,7 +4,7 @@ import markdown
 from dateutil import parser
 from markup import syntax_highlight
 import re
-from app.data import Post
+from app.data import Post, Comment
 
 
 def slugify(name):
@@ -46,6 +46,27 @@ def read_post(name):
     return post
 
 
+def import_comments(filename):
+    import json
+    from app.markup import markup_comment
+    from app.data import db_session
+    comments = json.loads(open(filename).read())
+    for comment in comments:
+        print comment['slug']
+        post = Post.query.filter_by(slug=comment['slug']).first()
+        model = Comment()
+        #model.user_id =
+        model.post_id = post.id
+        model.text = comment['content']
+        model.html = markup_comment(comment['content'])
+        model.website = comment['url']
+        model.name = comment['name']
+        date = parser.parse(comment['created'])
+        model.timestamp = date
+        db_session.add(model)
+        db_session.commit()
+
+
 def read_posts():
     folders = [folder for folder in os.listdir("posts")
                if not folder.startswith(".")]
@@ -58,6 +79,7 @@ def import_posts():
     from app.data import db_session
     posts = read_posts()
     for post in posts:
+        print post.slug
         if post:
             find_post = Post.query.filter_by(slug=post.slug).first()
 
