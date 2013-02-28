@@ -86,8 +86,12 @@ def import_posts():
             if find_post is None:
                 db_session.add(post)
             else:
-                print "NOT updating"
-                #db_session.update(post)
-                pass
+                find_post.title = post.title
+                find_post.date = post.date
+                find_post.text = post.text
+                find_post.html = post.html
+                find_post.head = post.head
+                find_post.footer = post.footer
+                db_session.add(find_post)
 
             db_session.commit()
