@@ -67,17 +67,17 @@ def import_comments(filename):
         db_session.commit()
 
 
-def read_posts():
-    folders = [folder for folder in os.listdir("posts")
-               if not folder.startswith(".")]
-    all_posts = [read_post(folder) for folder in folders]
+def read_posts(path):
+    directories = [directory for directory in os.listdir(path)
+               if not directory.startswith(".")]
+    all_posts = [read_post(directory) for directory in directories]
     posts = [post for post in all_posts if post is not None]
     return posts
 
 
-def import_posts():
+def import_posts(path):
     from app.data import db_session
-    posts = read_posts()
+    posts = read_posts(path)
     for post in posts:
         print post.slug
         if post:
