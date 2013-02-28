@@ -15,30 +15,30 @@ def slugify(name):
     return name
 
 
-def read_post(name):
-    if not os.path.exists("posts/%s/info" % (name)):
+def read_post(directory):
+    if not os.path.exists("%s/info" % (directory)):
         print "No info file found"
         return None
     config = ConfigParser.ConfigParser()
-    config.read("posts/%s/info" % (name))
+    config.read("%s/info" % (directory))
     title = config.get("Post", "title")
     date = parser.parse(config.get("Post", "date"))
-    text = open("posts/%s/index.txt" % (name)).read()
-    if os.path.exists("posts/%s/head.html" % (name)):
-        head = open("posts/%s/head.html" % (name)).read()
+    text = open("%s/index.txt" % (directory)).read()
+    if os.path.exists("%s/head.html" % (directory)):
+        head = open("%s/head.html" % (directory)).read()
     else:
         head = ""
-    if os.path.exists("posts/%s/foot.html" % (name,)):
-        footer = open("posts/%s/foot.html" % (name)).read()
+    if os.path.exists("%s/foot.html" % (directory,)):
+        footer = open("%s/foot.html" % (directory)).read()
     else:
         footer = ""
 
-    html = markdown.markdown(text)
-    html = syntax_highlight(html)
+    html = syntax_highlight(markdown.markdown(text))
+    slug = slugify(directory.split('/')[-1])
 
     post = Post(title=title,
                 date=date,
-                slug=slugify(name),
+                slug=slug,
                 text=text,
                 html=html,
                 head=head,
@@ -69,8 +69,9 @@ def import_comments(filename):
 
 def read_posts(path):
     directories = [directory for directory in os.listdir(path)
-               if not directory.startswith(".")]
-    all_posts = [read_post(directory) for directory in directories]
+                   if not directory.startswith(".")]
+    all_posts = [read_post(os.path.join(path, directory))
+                 for directory in directories]
     posts = [post for post in all_posts if post is not None]
     return posts
 
