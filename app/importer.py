@@ -5,6 +5,7 @@ from dateutil import parser
 from markup import syntax_highlight
 import re
 from app.data import Post, Comment
+import codecs
 
 
 def slugify(name):
@@ -23,7 +24,7 @@ def read_post(directory):
     config.read("%s/info" % (directory))
     title = config.get("Post", "title")
     date = parser.parse(config.get("Post", "date"))
-    text = open("%s/index.txt" % (directory)).read()
+    text = codecs.open("%s/index.txt" % (directory), "r", "utf-8").read()
     if os.path.exists("%s/head.html" % (directory)):
         head = open("%s/head.html" % (directory)).read()
     else:
