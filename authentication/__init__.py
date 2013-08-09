@@ -31,7 +31,6 @@ def before_request():
         if session:
             g.user = User.query.get(session['user_id'])
 
-
 def after_request(response):
     db_session.remove()
     return response
@@ -81,3 +80,4 @@ def account():
 from openid import *
 from twitter import *
 from google import *
+from persona import *

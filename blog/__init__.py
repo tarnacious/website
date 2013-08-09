@@ -101,6 +101,8 @@ def post_comment(slug):
         db_session.commit()
         flash('Comment Posted')
         return redirect(url_for('blog.post_view', slug=post.slug))
+    else:
+        flash('Comment incomplete');
 
     comments = Comment.query.filter_by(post_id=post.id)
     return render_template('blog/post.html',

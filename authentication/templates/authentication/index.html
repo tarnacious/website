@@ -4,6 +4,18 @@
     {# This is the user page. #}
 {% endblock %}
 
+{% block head %}
+    <link href="/static/persona-buttons.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="https://login.persona.org/include.js"></script>
+    <script>
+        {% if g.user and g.user.provider == 'persona' %}
+            window.persona_email = '{{ g.user.identity }}';
+        {% endif %}
+    </script>
+    <script src="/static/persona.js"></script>
+{% endblock %}
+
+
 {% block header %}
 <div id="header">
     <p>
@@ -50,12 +62,12 @@
   </h3>
   <p>You are currently logged in via {{ g.user.provider }}.</p>
   <form method="post" action="{{ url_for('authentication.logout') }}">
-        <input type="submit" value="Sign out"/>
+        <input id="logout" type="submit" value="Sign out"/>
   </form>
       <h3>Account</h3>
       <p>Permanently delete account. Any comments will be forever orphaned.
     <form accept-charset="UTF-8" action="{{ url_for('authentication.index') }}" method="post">
-      <input type=submit name=delete value="Delete account">
+      <input id="delete" type=submit name=delete value="Delete account">
   </form>
   </div>
   {% else %}
@@ -74,6 +86,12 @@
         <input type="hidden" name=next value="{{ next }}">
     </form>
 </div>
+    <p>
+    Or, with Mozilla Persona.
+    </p>
+    <div id="manual_openid">
+        <a href="#" id="persona" class="persona-button orange"><span>Sign in with your Email</span></a>
+    </div>
     <p>
     Or, you can authenticate using one of the services below.
     </p>

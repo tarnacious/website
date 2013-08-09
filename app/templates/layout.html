@@ -30,13 +30,13 @@
                 {% endblock %}
 
                 {% block flash %} 
+                    <div id="messages" class="messages">
                 {% if get_flashed_messages() %}
-                    <div class="messages">
                         {% for message in get_flashed_messages() %}
                         <p class=message>{{ message }}</p>
                         {% endfor %}
-                    </div>
                 {% endif %}
+                    </div>
                 {% endblock %}
             </div>
 

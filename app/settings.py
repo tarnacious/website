@@ -12,3 +12,5 @@ GOOGLE_REDIRECT_URI = '/auth/'
 
 LOG_FILE = 'var/log/author.log'
 LOG_FORMAT = '%(asctime)s %(levelname)s: %(message)s'
+
+PERSONA_URL = 'http://localhost:5000'
