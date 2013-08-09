@@ -9,6 +9,7 @@ import codecs
 
 
 def slugify(name):
+    name = name.replace("-", "_")
     name = re.sub(r'\W+', '', name)
     name = name.replace("_", "-")
     if name[0] == "-":
