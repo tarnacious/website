@@ -1,25 +1,25 @@
 {% extends "layout.html" %}
 
 {% block user %}
-    {# This is the user page. #}
+{# This is the user page. #}
 {% endblock %}
 
 {% block head %}
-    <link href="/static/persona-buttons.css" media="screen" rel="stylesheet" type="text/css" />
-    <script src="https://login.persona.org/include.js"></script>
-    <script>
-        {% if g.user and g.user.provider == 'persona' %}
-            window.persona_email = '{{ g.user.identity }}';
-        {% endif %}
-    </script>
-    <script src="/static/persona.js"></script>
+<link href="/static/persona-buttons.css" media="screen" rel="stylesheet" type="text/css" />
+<script src="https://login.persona.org/include.js"></script>
+<script>
+    {% if g.user and g.user.provider == 'persona' %}
+    window.persona_email = '{{ g.user.identity }}';
+    {% endif %}
+</script>
+<script src="/static/persona.js"></script>
 {% endblock %}
 
 
 {% block header %}
 <div id="header">
     <p>
-        The <a href="/journal">Journal</a> of <a href="/">Tarn Barford</a>
+    The <a href="/journal">Journal</a> of <a href="/">Tarn Barford</a>
     </p>
     <h1>
         {% if g.user %}
@@ -35,47 +35,47 @@
 
 {% block content %}
 
-  {% if g.user %}
-  <div class="account_page">
-  <h3>
-      Profile
-  </h3>
-  <p>The profile is not required but the email can be used to varifiy the account if there is a problem with the authentication provider and the name and url will be used by default in comments.</p>
-  <div class="profile_form">
+{% if g.user %}
+<div class="account_page">
+    <h3>
+        Session
+    </h3>
+    <p>You are currently logged in via {{ g.user.provider }}.</p>
+    <form method="post" action="{{ url_for('authentication.logout') }}">
+        <input id="logout" type="submit" value="Sign out"/>
+    </form>
+    <h3>
+        Profile
+    </h3>
+    <p>Profile information for this identity.</p>
+    <div class="profile_form">
+        <form accept-charset="UTF-8" action="{{ url_for('authentication.index') }}" method="post">
+            <div class="field name">
+                {{ form.name.label|safe }}{{ form.name()|safe }}
+            </div>
+            <div class="field link">
+                {{ form.url.label|safe }}{{ form.url()|safe }}
+            </div>
+            <div class="field link">
+                {{ form.email.label|safe }}{{ form.email()|safe }}
+            </div>
+            <div class="clear"></div>
+            <input type=submit value="Update profile">
+            <div class="clear"></div>
+        </form>
+    </div>
+    <h3>Account</h3>
+    <p>Permanently delete account. Any comments will be forever orphaned.
     <form accept-charset="UTF-8" action="{{ url_for('authentication.index') }}" method="post">
-        <div class="field name">
-            {{ form.name.label|safe }}{{ form.name()|safe }}
-        </div>
-        <div class="field link">
-            {{ form.url.label|safe }}{{ form.url()|safe }}
-        </div>
-        <div class="field link">
-            {{ form.email.label|safe }}{{ form.email()|safe }}
-        </div>
-        <div class="clear"></div>
-        <input type=submit value="Update profile">
-        <div class="clear"></div>
+        <input id="delete" type=submit name=delete value="Delete account">
     </form>
 </div>
-  <h3>
-      Session
-  </h3>
-  <p>You are currently logged in via {{ g.user.provider }}.</p>
-  <form method="post" action="{{ url_for('authentication.logout') }}">
-        <input id="logout" type="submit" value="Sign out"/>
-  </form>
-      <h3>Account</h3>
-      <p>Permanently delete account. Any comments will be forever orphaned.
-    <form accept-charset="UTF-8" action="{{ url_for('authentication.index') }}" method="post">
-      <input id="delete" type=submit name=delete value="Delete account">
-  </form>
-  </div>
-  {% else %}
+{% else %}
 
-    <p>
-    Authentication is required to comment, you can authenticate an OpenID.
-    </p>
-    <div id="manual_openid">
+<p>
+Authentication is required to comment, you can authenticate an OpenID.
+</p>
+<div id="manual_openid">
 
     <form action="{{ url_for('authentication.openid') }}" accept-charset="UTF-8" method="post">
         {% if error %}
@@ -86,36 +86,36 @@
         <input type="hidden" name=next value="{{ next }}">
     </form>
 </div>
-    <p>
-    Or, with Mozilla Persona.
-    </p>
-    <div id="manual_openid">
-        <a href="#" id="persona" class="persona-button orange"><span>Sign in with your Email</span></a>
-    </div>
-    <p>
-    Or, you can authenticate using one of the services below.
-    </p>
-    <ul id="authentications">
-        <li>
-        <a href="{{ url_for('authentication.login_twitter') }}">
-            <img alt="Authenticate with Twitter" src="/static/auth_buttons/twitter_64.png?1310614680" />
-        </a>
-        <a href="{{ url_for('authentication.login_google', next=next_url) }}">
-            <img alt="Authenticate with Google" src="/static/auth_buttons/google_64.png?1310614680" />
-        </a>
-        </li>
-    </ul>
-    <div class="clear"></div>
-        <p>
-        These services are only used to allow you to comment on this site.
-        They are not used to post on your wall or tweet shit to your followers.
-        </p>
-        Your identity is not revealed to other users and you have full control over the displayed
-        name and optional to link to an external site.
-        </p>
-        <p>
-        A benefit of authenicating is you will be able to update and delete your comments.
-        </p>
+<p>
+Or, with Mozilla Persona.
+</p>
+<div id="manual_openid">
+    <a href="#" id="persona" class="persona-button orange"><span>Sign in with your Email</span></a>
+</div>
+<p>
+Or, you can authenticate using one of the services below.
+</p>
+<ul id="authentications">
+    <li>
+    <a href="{{ url_for('authentication.login_twitter') }}">
+        <img alt="Authenticate with Twitter" src="/static/auth_buttons/twitter_64.png?1310614680" />
+    </a>
+    <a href="{{ url_for('authentication.login_google', next=next_url) }}">
+        <img alt="Authenticate with Google" src="/static/auth_buttons/google_64.png?1310614680" />
+    </a>
+    </li>
+</ul>
+<div class="clear"></div>
+<p>
+These services are only used to allow you to comment on this site.
+They are not used to post on your wall or tweet shit to your followers.
+</p>
+Your identity is not revealed to other users and you have full control over the displayed
+name and optional to link to an external site.
+</p>
+<p>
+A benefit of authenicating is you will be able to update and delete your comments.
+</p>
     </div>
     {% endif %}
-{% endblock %}
+    {% endblock %}
