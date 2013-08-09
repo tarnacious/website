@@ -13,8 +13,14 @@ My blog.
 # Create database
 
     $ ./bin/python
-    >> from author import data
+    >> from app import data
     >> data.init_db()
+
+# Import posts
+
+    $ ./bin/python
+    >> from app import importer
+    >> importer.import_posts('/path/to/posts')
 
 # Run the webserver
 
