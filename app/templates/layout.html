@@ -25,7 +25,7 @@
                 {% endblock %}
                 {% block user %}
                     {% if g.user %}
-                    <a class="auth_link" href="{{ url_for('authentication.index') }}">profile</a>
+                    <a class="auth_link" href="{{ url_for('authentication.index') }}">signed in</a>
                     {% endif %}
                 {% endblock %}
 

@@ -362,7 +362,7 @@ ul#posts
     float: right;
 }
 
-.auth_link 
+.auth_link, .auth_link:visited
 {
     position: absolute;
     right: 0px;
