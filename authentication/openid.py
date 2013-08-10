@@ -45,5 +45,5 @@ def create_or_login(resp):
     next_url = parse_next_url(request.args.get('next'))
     resp = make_response(redirect(next_url or url_for('authentication.index')))
     resp.set_cookie('session_id', session_id)
-    flash('You were signed in')
+    flash('Sign in with OpenID successful')
     return resp

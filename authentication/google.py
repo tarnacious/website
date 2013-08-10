@@ -54,7 +54,7 @@ def authorized(resp):
     resp = make_response(redirect(redirect_to))
     resp.set_cookie('session_id', session_id)
     resp.set_cookie('next', '', expires=datetime.now() - timedelta(days=1))
-    flash('You were signed in')
+    flash('Sign in with Google successful')
     return resp
 
 

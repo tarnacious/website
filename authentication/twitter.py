@@ -82,5 +82,5 @@ def oauth_authorized(resp):
     session_id = sessions.start(user)
     resp = make_response(redirect(next_url))
     resp.set_cookie('session_id', session_id)
-    flash('You were signed in')
+    flash('Sign in with Persona successful')
     return resp

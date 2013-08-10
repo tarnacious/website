@@ -37,7 +37,7 @@ def login_persona():
             next_url = parse_next_url(request.args.get('next')) or url_for('index')
             resp = make_response('You were signed in')
             resp.set_cookie('session_id', session_id)
-            flash('You were signed in')
+            flash('Sign in with Persona successful')
             return resp
 
     abort(500)
