@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 from werkzeug.contrib.fixers import ProxyFix
 
 app = Flask(__name__)
@@ -30,6 +30,8 @@ app.register_blueprint(blog.blog)
 
 @app.before_request
 def before_request():
+    if request.path not in ['/', '/authentication/'] and request.path.endswith('/'):
+        return redirect(request.path[:-1])
     authentication.before_request()
 
 
