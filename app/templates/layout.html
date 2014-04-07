@@ -2,8 +2,9 @@
 <html>
     <head>
         <title>Tarn Barford</title>
+
         <link href="/static/style.css" media="screen" rel="stylesheet" type="text/css" />
-        <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss" />
+        <link rel="alternate" type="application/atom+xml" title="Journals of Tarn Barford" href="{{ url_for('blog.atom') }}" />
 
         {% block head %}
         {% endblock %}

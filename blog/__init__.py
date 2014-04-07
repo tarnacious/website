@@ -3,6 +3,8 @@ from app.data import db_session, Post, Comment
 from datetime import datetime
 from sqlalchemy import desc
 from app.markup import markup_comment
+from werkzeug.contrib.atom import AtomFeed
+from urlparse import urljoin
 
 blog = Blueprint('blog', __name__,
                  template_folder='templates')
@@ -27,6 +29,22 @@ class CommentForm(Form):
 def index():
     posts = db_session.query(Post).order_by(desc(Post.date))
     return render_template('blog/index.html', posts=posts)
+
+@blog.route('/atom')
+def atom():
+    feed = AtomFeed('The Journals of Tarn Barford',
+                    feed_url=request.url, url=request.url_root)
+    posts = db_session.query(Post).order_by(desc(Post.date)) \
+                      .limit(15).all()
+    for post in posts:
+        feed.add(post.title, unicode(post.html),
+                 content_type='html',
+                 author="tarn",
+                 url=urljoin(request.url_root,
+                             "journal/" + post.slug),
+                 updated=post.date,
+                 published=post.date)
+    return feed.get_response()
 
 
 @blog.route('/journal/<slug>', methods=['GET'])
