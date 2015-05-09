@@ -39,21 +39,22 @@ def syntax_highlight(html):
     elements = soup.findAll('pre')
     for pretag in elements:
         element = pretag.find('code')
-        text = str(element.getString())
-        text = HTMLParser.HTMLParser().unescape(text)
-        shebang_re = r'^\W*(#!\/[^\ \n]+)'
-        shebang = re.search(shebang_re, text)
-        if shebang:
-            text = re.sub(shebang_re, '', text)
-            name = shebang.group(1).split("/")[-1]
-            if name == "bash":
-                html = '<div class="highlight"><pre>%s</pre></div>' % (text)
-                code_soup = BeautifulSoup(html)
-                element.parent.replaceWith(code_soup)
-            else:
-                lexer = get_lexer_by_name(name)
-                if lexer:
-                    html = pygments.highlight(text, lexer, HtmlFormatter())
-                    code_soup = BeautifulSoup(html)
-                    element.parent.replaceWith(code_soup)
+        if element:
+		text = str(element.getString())
+		text = HTMLParser.HTMLParser().unescape(text)
+		shebang_re = r'^\W*(#!\/[^\ \n]+)'
+		shebang = re.search(shebang_re, text)
+		if shebang:
+		    text = re.sub(shebang_re, '', text)
+		    name = shebang.group(1).split("/")[-1]
+		    if name == "bash":
+			html = '<div class="highlight"><pre>%s</pre></div>' % (text)
+			code_soup = BeautifulSoup(html)
+			element.parent.replaceWith(code_soup)
+		    else:
+			lexer = get_lexer_by_name(name)
+			if lexer:
+			    html = pygments.highlight(text, lexer, HtmlFormatter())
+			    code_soup = BeautifulSoup(html)
+			    element.parent.replaceWith(code_soup)
     return str(soup)
