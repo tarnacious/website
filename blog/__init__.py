@@ -30,6 +30,17 @@ def index():
     posts = db_session.query(Post).order_by(desc(Post.date))
     return render_template('blog/index.html', posts=posts)
 
+def clean_post(html):
+    import lxml
+    from lxml.html.clean import Cleaner
+    from StringIO import StringIO
+    
+    cleaner = Cleaner()
+    cleaner.javascript = True
+    cleaner.style = True
+    cleaner.remove_tags = ['body']
+    return lxml.html.tostring(cleaner.clean_html(lxml.html.parse(StringIO(html)))) 
+
 @blog.route('/atom')
 def atom():
     feed = AtomFeed('The Journals of Tarn Barford',
@@ -37,7 +48,7 @@ def atom():
     posts = db_session.query(Post).order_by(desc(Post.date)) \
                       .limit(15).all()
     for post in posts:
-        feed.add(post.title, unicode(post.html),
+        feed.add(post.title, unicode(clean_post(post.html)),
                  content_type='html',
                  author="tarn",
                  url=urljoin(request.url_root,
