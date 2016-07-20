@@ -363,6 +363,13 @@ ul#posts
     float: right;
 }
 
+#post_content > pre
+{
+    width: 900px;
+    overflow-x: scroll;
+}
+
+
 .auth_link, .auth_link:visited
 {
     position: absolute;
