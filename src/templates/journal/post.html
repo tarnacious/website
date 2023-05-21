@@ -43,17 +43,7 @@
         {% endfor %}
     </ul>
     {% endif %}
-    {% if g.user and form and not edit_comment %}
-        <h3>Add comment</h3>
-        {% include "blog/comment_form.html" %}
-    {% else %}
-        {% if g.user %}
-        <a href="/journal/{{ post["slug"] }}#edit">Comment</a>
-        {% else %}
-        <a href="{{ url_for('authentication.index', next=url_for('blog.post_view', slug=post.slug)) }}">Comment</a>
-        {% endif %}
 
 
-    {% endif %}
 </div>
 {% endblock %}

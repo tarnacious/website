@@ -1,13 +1,2 @@
-# virtualenv folder
-bin/
-lib/
-include/
-
-# configuration
-etc/
-
-# logging
-var/
-
-# posts folder
-posts/
+build
+venv

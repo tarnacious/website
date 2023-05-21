@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tarn Barford</title>
+        <meta charset="utf-8"/>
+        <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+        <link href="/static/style.css" media="screen" rel="stylesheet" type="text/css" />
+        <link rel="alternate" type="application/atom+xml" title="Journals of Tarn Barford" href="/atom" />
+        {% block head %}
+        {% endblock %}
+    </head>
+    <body>
+        <div id="container">
+            <div id="header">
+                {% block header %}
+                    <p>
+                    The <a href="/journal">Journal</a> of</p>
+                    <h1>
+                        Tarn Barford
+                    </h1>
+                    <p>
+                    </p>
+                {% endblock %}
+            </div>
+
+            {% block content %}
+            {% endblock %}
+
+        </div>
+        <div id="footer">
+            <p>&nbsp;</p>
+            <p>Questions, comments, suggestions? Email me, <a href="mailto:tarn@tarnbarford.net">tarn@tarnbarford.net</a> (<a href="/static/pgp.txt">public key</a>)</p>
+            <p>&nbsp;</p>
+            <p>All original content is licensed under the cc-wiki license.</p>
+        </div>
+        {% block footer %}
+        {% endblock %}
+    </body>
+</html>
