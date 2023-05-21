@@ -1,15 +1,15 @@
 Custom static site generator for tarnbarford.net.
 
-Pull submodules (content for the site)
-
-```
-git submodule update --recursive
-```
-
 Install dependencies:
 
 ```
 pip install -r requirements
+```
+
+Clone posts repository
+
+```
+git clone https://github.com/tarnacious/posts
 ```
 
 Generate the site:
