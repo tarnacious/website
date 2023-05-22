@@ -6,7 +6,7 @@ import codecs
 import markdown
 from dateutil import parser
 from datetime import timezone
-from highlighting import syntax_highlight
+from text2html import text2html
 from jinja2 import Environment, FileSystemLoader
 from feedgen.feed import FeedGenerator
 
@@ -34,8 +34,6 @@ def read_post(directory):
     date = parser.parse(config.get("Post", "date"))
     date = date.replace(tzinfo=timezone.utc)
     text = open("%s/index.txt" % (directory), "r", encoding="utf-8").read()
-    if directory == "../posts/techbikers_2016":
-        print(text)
     if os.path.exists("%s/head.html" % (directory)):
         head = open("%s/head.html" % (directory)).read()
     else:
@@ -45,10 +43,7 @@ def read_post(directory):
     else:
         footer = ""
 
-    html = markdown.markdown(text)
-    html = syntax_highlight(html)
-    if directory == "../posts/techbikers_2016":
-        print(html)
+    html = text2html(text)
     slug = slugify(directory.split('/')[-1])
 
     post = {
