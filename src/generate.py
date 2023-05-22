@@ -2,8 +2,6 @@ import os
 import re
 import shutil
 from configparser import ConfigParser
-import codecs
-import markdown
 from dateutil import parser
 from datetime import timezone
 from text2html import text2html
@@ -23,6 +21,20 @@ def slugify(name):
         name = name[:-1]
     return name
 
+def copy_assets(source_dir, destination_dir):
+    if not os.path.exists(destination_dir):
+        os.makedirs(destination_dir)
+
+    for item in os.listdir(source_dir):
+        source_item = os.path.join(source_dir, item)
+        destination_item = os.path.join(destination_dir, item)
+        if os.path.isfile(source_item):
+            filename = os.path.basename(source_item)
+            if filename in ["index.txt", "info", "head.html", "foot.html"]:
+                continue
+            shutil.copy2(source_item, destination_item)
+        elif os.path.isdir(source_item):
+            shutil.copytree(source_item, destination_item)
 
 def read_post(directory):
     if not os.path.exists("%s/info" % (directory)):
@@ -53,7 +65,8 @@ def read_post(directory):
             "text": text,
             "html": html,
             "head": head,
-            "footer": footer
+            "footer": footer,
+            "directory": directory
     }
     return post
 
@@ -132,6 +145,7 @@ if __name__ == "__main__":
         content = render_post(post)
         post_path = os.path.join(output_path, "journal", post["slug"])
         os.makedirs(post_path)
+        copy_assets(post["directory"], post_path)
         with open(os.path.join(post_path, "index.html"), 'w') as out:
             out.write(content)
 
