@@ -12,7 +12,7 @@ src_path = os.path.dirname(__file__)
 template_path = os.path.join(src_path, "templates")
 output_path = "./build"
 templating = Environment(loader=FileSystemLoader(template_path))
-content_path = "../posts"
+content_path = "./posts"
 
 def slugify(name):
     name = re.sub(r'\W+', '', name)
