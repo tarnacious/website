@@ -2,6 +2,8 @@ import os
 import re
 import shutil
 import sys
+import json
+from itertools import groupby
 from configparser import ConfigParser
 from dateutil import parser
 from datetime import timezone
@@ -101,14 +103,14 @@ def generate_feeds(posts):
         fe.link(href=post_url, rel="self")
         fe.author(name="tarn", email="tarn@tarnbarford.net")
         fe.published(post["date"])
-        fe.content(render_post(post))
+        fe.content(render_post(post, None))
 
     fg.atom_file(os.path.join(output_path, "atom.xml"))
     fg.rss_file(os.path.join(output_path, "rss.xml"))
 
-def render_post(post):
+def render_post(post, comments):
     template = templating.get_template("journal/post.html")
-    return template.render(post=post)
+    return template.render(post=post, comments=comments)
 
 def render_index():
     template = templating.get_template("index.html")
@@ -118,9 +120,23 @@ def render_journal_index(posts):
     template = templating.get_template("journal/index.html")
     return template.render(posts=posts)
 
+def read_comments():
+    with open(os.path.join(content_path, "comments.json"), 'r') as file:
+        data = json.load(file)
+    data.sort(key=lambda x: x['slug'])
+    for comment in data:
+        comment["timestamp"] = parser.parse(comment["timestamp"])
+        comment["html"] = text2html(comment["text"])
+
+    # Group the data by the desired key
+    grouped_data = groupby(data, key=lambda x: x['slug'])
+    # Convert the grouped_data into a plain dictionary
+    comments = {str(key): list(group) for key, group in grouped_data}
+    return comments
 
 
 if __name__ == "__main__":
+    comments = read_comments()
     posts = read_posts(content_path)
     if os.path.exists(output_path):
         shutil.rmtree(output_path)
@@ -135,9 +151,10 @@ if __name__ == "__main__":
     directories = [directory for directory in os.listdir(content_path)
                    if not directory.startswith(".")]
     for directory in directories:
-        shutil.copytree(
-            os.path.join(content_path, directory),
-            os.path.join(output_path, "static/journal", directory))
+        if os.path.isfile(directory):
+            shutil.copytree(
+                os.path.join(content_path, directory),
+                os.path.join(output_path, "static/journal", directory))
 
 
     with open(os.path.join(output_path, "index.html"), 'w') as out:
@@ -147,7 +164,10 @@ if __name__ == "__main__":
         out.write(render_journal_index(posts))
 
     for post in posts:
-        content = render_post(post)
+        print(post["directory"])
+        post_comments = comments.get(post["slug"], [])
+        post_comments = sorted(post_comments, key=lambda post: post["timestamp"], reverse=False)
+        content = render_post(post, post_comments)
         post_path = os.path.join(output_path, "journal", post["slug"])
         os.makedirs(post_path)
         copy_assets(post["directory"], post_path)

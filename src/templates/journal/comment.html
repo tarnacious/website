@@ -1,0 +1,16 @@
+<a name="{{ comment.id }}"></a>
+<div>
+    {% if comment.html %}
+        {{ comment.html|safe }}
+    {% else %}
+    <p><em>Comment is empty</em></p>
+    {% endif %}
+</div>
+<div class="attribution">
+    {% if comment.website %}
+        <a href="{{ comment.website }}" target="_blank">{{ comment.name }}</a>
+    {% else %}
+        {{ comment.name }}
+    {% endif %} -
+    <span class="date">{{ comment.timestamp.strftime('%h %d, %Y') }}</span>
+</div>

@@ -32,18 +32,10 @@
     <ul>
         {% for comment in comments %}
         <li>
-            {% if edit_comment and edit_comment.id == comment.id %}
-                {% include "blog/comment_form.html" %}
-            {% else %}
-                {% include "blog/comment.html" %}
-            {% endif %}
+            {% include "journal/comment.html" %}
         </li>
-        {% else %}
-        <p>There are no comments</p>
         {% endfor %}
     </ul>
     {% endif %}
-
-
 </div>
 {% endblock %}
