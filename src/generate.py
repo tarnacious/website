@@ -1,6 +1,7 @@
 import os
 import re
 import shutil
+import sys
 from configparser import ConfigParser
 from dateutil import parser
 from datetime import timezone
@@ -15,11 +16,10 @@ templating = Environment(loader=FileSystemLoader(template_path))
 content_path = "./posts"
 
 def slugify(name):
-    name = re.sub(r'\W+', '', name)
-    name = name.replace("_", "-")
-    if name[0] == "-":
-        name = name[:-1]
-    return name
+    pattern = r"\d{4}-\d{2}-\d{2}-(.*)"
+    match = re.search(pattern, name)
+    if match:
+        return match.group(1)
 
 def copy_assets(source_dir, destination_dir):
     if not os.path.exists(destination_dir):
@@ -37,9 +37,15 @@ def copy_assets(source_dir, destination_dir):
             shutil.copytree(source_item, destination_item)
 
 def read_post(directory):
-    if not os.path.exists("%s/info" % (directory)):
-        print("No info file found")
+    slug = slugify(directory.split('/')[-1])
+    if not slug:
+        sys.stderr.write("Unable to parse slug: " + directory + "\n")
         return None
+
+    if not os.path.exists("%s/info" % (directory)):
+        sys.stderr.write("No info file found: " + directory + "\n")
+        return None
+
     config = ConfigParser()
     config.read("%s/info" % (directory))
     title = config.get("Post", "title")
@@ -56,7 +62,6 @@ def read_post(directory):
         footer = ""
 
     html = text2html(text)
-    slug = slugify(directory.split('/')[-1])
 
     post = {
             "title": title,
