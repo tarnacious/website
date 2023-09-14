@@ -140,11 +140,10 @@ if __name__ == "__main__":
     posts = read_posts(content_path)
     if os.path.exists(output_path):
         shutil.rmtree(output_path)
-    os.makedirs(output_path)
-    os.makedirs(os.path.join(output_path, "journal"))
     shutil.copytree(
         os.path.join(src_path, "static"),
-        os.path.join(output_path, "static"))
+        output_path)
+    os.makedirs(os.path.join(output_path, "journal"))
 
     # content directories to /static/journal
     os.makedirs(os.path.join(output_path, "static/journal"))
