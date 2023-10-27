@@ -64,7 +64,7 @@ a:hover {
 
 
 #container #header {
-    text-align: center; 
+    text-align: center;
     position: relative;
 }
 
@@ -124,7 +124,7 @@ pre.prettyprint {
     width: 200px;
 }
 
-#edit-post ul { 
+#edit-post ul {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -208,7 +208,7 @@ pre.prettyprint {
     height: 300px;
 }
 
-#comment_form label 
+#comment_form label
 {
     font-variant: small-caps;
     display: block;
@@ -230,9 +230,9 @@ pre.prettyprint {
     margin-right: 20px;
 }
 
-#comment_form textarea 
+#comment_form textarea
 {
-    border: 0;  
+    border: 0;
     width: 100%;
     padding: 0px;
     margin-top: 20px;
@@ -258,7 +258,7 @@ pre.prettyprint {
   font-size: 20px;
 }
 
-ul#posts 
+ul#posts
 {
   padding: 0;
   margin: 0;
@@ -292,7 +292,7 @@ ul#posts
   width: 500px;
 }
 
-#authentications 
+#authentications
 {
   background-color: white;
   list-style: none;
@@ -412,12 +412,12 @@ input[type=submit] {
 }
 
 
-#comment_form .errors 
+#comment_form .errors
 {
     margin-bottom: 20px;
 }
 
-#comment_form .actions input 
+#comment_form .actions input
 {
     float: right;
 }
