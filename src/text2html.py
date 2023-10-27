@@ -25,6 +25,14 @@ def sanitize(html):
     cleaner = Cleaner(remove_tags=['img'])
     return cleaner.clean_html(html)
 
+def handle_shebang(text):
+    shebang_re = r'^\W*(#!\/[^\ \n]+)'
+    shebang = re.search(shebang_re, text)
+    if shebang:
+        text = re.sub(shebang_re, '', text)
+        name = shebang.group(1).split("/")[-1]
+        return (name, text)
+    return (None, text)
 
 def syntax_highlight(html):
     """
@@ -47,12 +55,12 @@ def syntax_highlight(html):
         element = pretag.find('code')
         if element:
             text = unescape(str(element.contents[0]))
-            shebang_re = r'^\W*(#!\/[^\ \n]+)'
-            shebang = re.search(shebang_re, text)
-            if shebang:
-                text = re.sub(shebang_re, '', text)
-                name = shebang.group(1).split("/")[-1]
-                formatter = HtmlFormatter(wrapcode=True)
+            name, text = handle_shebang(text)
+            if name:
+                class_name = "highlight-console" if name == "console" else "highlight"
+                class_name = "highlight-block " + class_name
+
+                formatter = HtmlFormatter(wrapcode=True, cssclass=class_name)
                 if name == "bash":
                     lexer = get_lexer_by_name("text")
                 else:
