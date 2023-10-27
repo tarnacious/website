@@ -10,7 +10,11 @@
         buildInputs = [
           pkgs.python310Packages.virtualenv
           pkgs.python310Packages.pip
+          pkgs.inotify-tools
         ];
+        shellHook = ''
+          . ./venv/bin/activate
+        '';
       };
     };
 }
