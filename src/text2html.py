@@ -4,6 +4,7 @@ import pygments
 from pygments.lexers import get_lexer_by_name
 import pygments.lexers
 from pygments.formatters import HtmlFormatter
+from pygments.lexers import load_lexer_from_file
 import re
 from html import unescape
 import markdown
@@ -63,6 +64,8 @@ def syntax_highlight(html):
                 formatter = HtmlFormatter(wrapcode=True, cssclass=class_name)
                 if name == "bash":
                     lexer = get_lexer_by_name("text")
+                elif name == "nix":
+                    lexer = load_lexer_from_file("src/nixlexer.py", "NixLexer")
                 else:
                     lexer = get_lexer_by_name(name)
                     if not lexer:
