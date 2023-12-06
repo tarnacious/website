@@ -1,0 +1,1 @@
+while inotifywait  -e modify,create,delete -r ../german/lookup; do python src/generate.py; done

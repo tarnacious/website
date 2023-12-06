@@ -10,6 +10,7 @@ from datetime import timezone
 from text2html import text2html
 from jinja2 import Environment, FileSystemLoader
 from feedgen.feed import FeedGenerator
+from pathlib import Path
 
 src_path = os.path.dirname(__file__)
 template_path = os.path.join(src_path, "templates")
@@ -120,6 +121,14 @@ def render_journal_index(posts):
     template = templating.get_template("journal/index.html")
     return template.render(posts=posts)
 
+def render_german_notes_index(posts):
+    template = templating.get_template("german/index.html")
+    return template.render(posts=posts)
+
+def render_german_note(post):
+    template = templating.get_template("german/post.html")
+    return template.render(post=post)
+
 def read_comments():
     with open(os.path.join(content_path, "comments.json"), 'r') as file:
         data = json.load(file)
@@ -135,20 +144,65 @@ def read_comments():
     return comments
 
 
-if __name__ == "__main__":
-    comments = read_comments()
-    posts = read_posts(content_path)
+def generate_notes():
+    with open(os.path.join(output_path, "journal/index.html"), 'w') as out:
+        out.write(render_journal_index([]))
+
+def get_directories(content_path):
+    return [directory for directory in os.listdir(content_path)
+                   if not directory.startswith(".")]
+
+
+def get_german_nodes():
+    filenames = get_directories("../german/lookup")
+    for filename in filenames:
+        with open(os.path.join("../german/lookup/", filename), 'r') as markdown_file:
+            content = markdown_file.read()
+
+
+def generate_german_notes():
+    print("generating german")
+    os.makedirs(os.path.join(output_path, "german"))
+    path = os.path.join(output_path, "german/index.html")
+
+    with open(path, 'w') as out:
+        html = render_german_notes_index([])
+        out.write(html)
+    files = get_directories("../german/lookup")
+    print(files)
+    for file in files:
+        print(file)
+        with open(os.path.join("../german/lookup/", file), 'r') as markdown_file:
+            filename = Path(file).stem
+            content = markdown_file.read()
+
+            html = text2html(content)
+            post = {
+                "title": filename,
+                "html": html
+            }
+            html = render_german_note(post)
+            with open(os.path.join(output_path, "german/", filename + ".html"), 'w') as out:
+                out.write(html)
+
+def generate_website():
     if os.path.exists(output_path):
         shutil.rmtree(output_path)
     shutil.copytree(
         os.path.join(src_path, "static"),
         output_path)
+    with open(os.path.join(output_path, "index.html"), 'w') as out:
+        out.write(render_index())
+
+
+def generate_blog():
     os.makedirs(os.path.join(output_path, "journal"))
+    comments = read_comments()
+    posts = read_posts(content_path)
 
     # content directories to /static/journal
     os.makedirs(os.path.join(output_path, "static/journal"))
-    directories = [directory for directory in os.listdir(content_path)
-                   if not directory.startswith(".")]
+    directories = get_directories(content_path)
     for directory in directories:
         if os.path.isfile(directory):
             shutil.copytree(
@@ -156,14 +210,10 @@ if __name__ == "__main__":
                 os.path.join(output_path, "static/journal", directory))
 
 
-    with open(os.path.join(output_path, "index.html"), 'w') as out:
-        out.write(render_index())
-
     with open(os.path.join(output_path, "journal/index.html"), 'w') as out:
         out.write(render_journal_index(posts))
 
     for post in posts:
-        print(post["directory"])
         post_comments = comments.get(post["slug"], [])
         post_comments = sorted(post_comments, key=lambda post: post["timestamp"], reverse=False)
         content = render_post(post, post_comments)
@@ -174,3 +224,9 @@ if __name__ == "__main__":
             out.write(content)
 
     generate_feeds(posts)
+
+
+if __name__ == "__main__":
+    generate_website()
+    generate_german_notes()
+    #generate_blog()

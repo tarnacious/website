@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<style>
+  table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+  }
+  table, th, td {
+    text-align: left;
+    border: 1px solid #54585d;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+</style>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block header %}
+<div id="header">
+    <p>From the <a href="/german">German Notes</a> of <a href="/">Tarn Barford</a></p>
+    <h1>
+        {{ post.title }}
+    </h1>
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="post_content">
+    {{ post.html|safe }}
+</div>
+{% endblock %}

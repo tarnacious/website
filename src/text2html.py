@@ -10,7 +10,7 @@ from html import unescape
 import markdown
 
 def text2html(text):
-    html = markdown.markdown(text)
+    html = markdown.markdown(text, extensions=["tables"])
     html = syntax_highlight(html)
     return html
 
